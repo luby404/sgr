@@ -1,0 +1,79 @@
+.header {
+    background-color: var(--primaria);
+    padding: 10px;
+}
+
+.logo {
+    text-decoration: none;
+    color: var(--text);
+}
+
+nav .iten_menu {
+    text-decoration: none;
+    color: var(--text);
+    background-color: var(--fundo);
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 0;
+
+    text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 10px   ;
+
+    position: relative;
+    
+}
+
+nav .iten_menu:hover, nav .iten_menu.ative {
+    color: var(--text2);
+    background-color: var(--secundaria);
+    animation: expand .3s linear forwards;
+    font-weight: bold;
+}
+
+nav .iten_menu span {
+    font-size: .74rem;
+    position: absolute;
+    top: -16px;
+    left: 0;
+    color: var(--text);
+    display: none;
+}
+
+nav .iten_menu:hover > span {
+    display: flex;
+}
+
+.content_app {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+/* produtos */
+.lista_produtos {
+    opacity: 1;
+}
+
+.lista_produtos .cat_iten {
+    text-decoration: none;
+    font-size: .7rem;
+    background-color: var(--primaria);
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 0;
+    color: var(--text);
+    font-weight: bold;
+
+    transition: all .3s ease;
+}
+
+.lista_produtos .cat_iten:hover, 
+.lista_produtos .cat_iten.ative {
+    background-color: var(--secundaria);
+    color: var(--text2);
+}

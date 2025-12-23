@@ -1,0 +1,73 @@
+<div class="column header_print">
+    <h4>Restaurante Second</h4>
+    <span>Av. Fidel castro 4f5</span>
+    <div class="row">
+        <strong>Pedido:</strong>
+        <p>{{ dados.pedido_id }}</p>
+    </div>
+    <div class="row">
+        <strong>Comanda:</strong>
+        <p>{{ dados.comanda }}</p>
+    </div>
+    <div class="row">
+        <strong>Data/hora:</strong>
+        <p>{{ dados.data }}</p>
+    </div>
+</div>
+
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <td>produto</td>
+                <td>qtd</td>
+                <td>preço</td>
+                <td>subtotal</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in dados.produtos %}
+            <tr>
+                <td>{{ p.produto.nome  }}</td>
+                <td>{{ p.quantidade  }}</td>
+                <td>{{ p.preco  }}</td>
+                <td>{{ p.subtotal  }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<hr>
+
+<div class="column price_print">
+
+    <div class="row">
+        <strong>Taxa de serviço:</strong>
+        <span>{{ dados.taxa }}%</span>
+    </div>
+
+    <div class="row">
+        <strong>SubTotal:</strong>
+        <span>{{ dados.sub_total }}</span>
+    </div>
+    <div class="row">
+        <strong>Total:</strong>
+        <span>{{ dados.valor_total }}</span>
+    </div>
+
+
+</div>
+
+<div class="column header_print">
+    <p>Estimular seu paladar com nossas iguarias é o nosso papel. Obrigado pela preferencia</p>
+</div>
+
+<div class="row row_button">
+    <div class="button">
+        <span>Imprimir</span>
+    </div>
+    <a href="{{ url_for('dashboard.pedidos' ) }}" class="button button2">
+        <span>Voltar</span>
+    </a>
+</div>

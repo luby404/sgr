@@ -1,0 +1,29 @@
+<div class="column">
+    <div class="row" style="min-width: 400px;">
+        <strong>Selecione uma comanda e Uma mesa</strong>
+
+        <i class="ri-close-line button" onclick="change_modal_viwe()"></i>
+    </div>
+
+    <form action="{{ url_for('pdv.new' ) }}" class="column" method="post">
+
+        <div class="row">
+            <select name="comanda" id="" class="imput_" required>
+                <option value="">Selecione uma comanda</option>
+                {% for comanda in dados.comandas %}
+                    <option value="{{ comanda.id }}">{{ comanda.codigo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <div></div>
+            <div class="row2">
+                <button class="button">
+                    <span>Abrir Pedido</span>
+                </button>
+            </div>
+        </div>
+
+    </form>
+</div>

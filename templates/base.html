@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/remix/remixicon.css') }}">
+
+    <title>Iya-Gest</title>
+    {% block head %}
+
+    {% endblock %}
+
+</head>
+
+<body>
+
+    {% block body %}
+
+    {% endblock %}
+
+    <div class="overlay hide" id="overlay">
+        <div class="modal" id="modal">
+
+        </div>
+    </div>
+
+    <div class="print_area" id="print_content">
+
+        <div class="print_content column" id="print">
+
+            
+
+
+
+        </div>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='js/htmx.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+   
+
+    {% block script %}
+
+    {% endblock %}
+
+</body>
+
+</html>

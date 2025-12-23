@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pdv.pedidos.css') }}">
+
+{% endblock %}
+
+{% block body %}
+
+<div class="pdv_leyout">
+
+    <div class="view column content_card">
+
+        <div class="row">
+            <div class="row2">
+                <strong>Pedido Nº:</strong>
+                <span>{{ dados.pedido.id }}</span>
+            </div>
+            <div class="row2">
+                <strong>Comanda:</strong>
+                <span>{{ dados.pedido.comanda.codigo }}</span>
+            </div>
+            
+        </div>
+
+        <div class="row">
+            <div class="row3">
+                <strong>Produtos</strong>
+                <span>({{ dados.total_itens }})</span>
+            </div>
+        </div>
+
+
+        <div class="carrinho_content column">
+
+            {% for pedido in dados.carrinho %}
+                <div class="iten_carrinho column">
+                    <div class="row">
+                        <span class="text_produto">{{ pedido.produto.nome }}</span>
+                        <span>{{ pedido.display_price }}</span>
+                    </div>
+                    <div class="row">
+                        <span>x{{ pedido.quantidade }}</span>
+
+                        <a href="{{ url_for('pdv.delete_carrinho', pedido=dados.pedido.id, produto=pedido.id ) }}" class="button">
+                            <i class="ri-delete-bin-line"></i>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="column infos_pedido">
+            <div class="row">
+                <span>Subtotal</span>
+                <span>{{ dados.sub_total }}</span>
+            </div>
+            <div class="row">
+                <span>Taxa</span>
+                <span>{{ dados.taxa }}%</span>
+            </div>
+            <div class="row">
+                <strong>Total</strong>
+                <strong>{{ dados.total }}</strong>
+            </div>
+        </div>
+
+        <div class="controls_content row2">
+
+            <div class="button" hx-get="{{ url_for('pdv.finalizar', pedido=dados.pedido.id ) }}" hx-target="#modal" onclick="change_modal_viwe()" >
+                <i class="ri-save-line"></i>
+                <span>Finalizar</span>
+            </div>
+            <a href="{{ url_for('pdv.cancel_pedido', pedido=dados.pedido.id ) }}" class="button button2">
+                <i class="ri-close-line"></i>
+                <span>Cancelar</span>
+            </a>
+            <div class="button ">
+                <i class="ri-print-line"></i>
+                <span>Imprimir pedido</span>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <div class="view grid_produtos column">
+        <div class="row">
+            <strong>Selecione os produros</strong>
+            <div class="row2">
+
+                <a href="{{ url_for('dashboard.pedidos' ) }}" class="button">
+                    <i class="ri-arrow-left-line"></i>
+                    <span>Voltar</span>
+                </a>
+
+            </div>
+        </div>
+        <div class="row2 categorias_content">
+            <a href="{{ url_for('pdv.pedido', cate='all', pedido=dados.pedido.id ) }}" class="cat_iten ative">Todas</a>
+            {% for cat in dados.categorias %}
+            <a href="{{ url_for('pdv.pedido', cate=cat.id, pedido=dados.pedido.id ) }}" class="cat_iten">{{ cat.nome }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="produtos_view_grid">
+
+            {% for produto in dados.produtos %}
+            <a href="{{ url_for('pdv.add_carrinho', produto=produto.id, pedido=dados.pedido.id ) }}"
+                class="card_produto">
+                <img src="{{ url_for('static', filename='uploads/'+produto.capa_produto) }}" alt="">
+                <div class="infos column">
+                    <span>{{ produto.nome }}</span>
+                    <strong>{{ produto.preco_venda }}</strong>
+                </div>
+            </a>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+
+<script>
+
+    document.querySelectorAll(".controls_content a").forEach((el)=>{
+        el.addEventListener("click", function(e){
+            if (confirm("Deseja processeguir com a operação?")) {
+                //el.click()
+            }else e.preventDefault()
+        })
+    })
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'dh.index.html' %}
+
+{% block content %}
+    <div class="column">
+    <div class="row">
+        <div class="row2">
+            <strong>Filtrar pedidos:</strong>
+            <div class="row2 lista_produtos">
+                <a href="?tipo={{ dados.tipos_pedido[0] }}" class="cat_iten ative" >{{ dados.tipos_pedido[0] }}</a>
+                {% for tipo in dados.tipos_pedido[1:] %}
+                    <a href="?tipo={{tipo}}" class="cat_iten" >{{ tipo }}</a>
+                {% endfor %}
+                
+            </div>
+        </div>
+        <a hx-get="{{ url_for('pdv.new' ) }}" hx-target="#modal" onclick="change_modal_viwe()" class="button">
+            <i class="ri-add-line"></i>
+            <span>Novo Pedido</span>
+        </a>
+
+    </div>
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <td>Pedido</td>
+                    <td>Comanda</td>
+                    <td>Produtos</td>
+                    <td>Sub Total</td>
+                    <td>Status</td>
+                    <td>Data/Hora</td>
+                    <td>Acções</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in dados.pedidos %}
+                <tr>
+                    <td>#{{ pedido.id }}</td>
+                    <td>{{ pedido.comanda }}</td>
+                    <td>{{ pedido.produtos }}</td>
+                    <td>{{ pedido.sub_total }}</td>
+                    <td>{{ pedido.status }}</td>
+                    <td>{{ pedido.criado_em }}</td>
+                    <td>
+                        <div class="row2">
+                            
+                            {% if pedido.status == "pendente" %}
+                                <a href="{{ url_for('pdv.pedido', pedido=pedido.id ) }}" class="button">
+                                    <i class="ri-eye-line"></i>
+                                    <span>Abrir</span>
+                                </a>
+                            {% elif pedido.status == "finalizado" %}
+                                <a href="" hx-get="{{ url_for('pdv.detalhes', pedido=pedido.id ) }}" hx-target="#print" onclick="print_content_change()" class="button">
+                                    <i class="ri-eye-line"></i>
+                                    <span>detalhes</span>
+                                </a>
+                            {% else %}
+                                
+                            {% endif %}
+
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,25 @@
+<div class="column">
+    <div class="row" style="min-width: 400px;">
+        <strong>Finalizar Pedido: {{ dados.pedido_id }}</strong>
+    </div>
+    <span>Tem a certeza que Deseja finalizar o pedido?</span>
+    <form class="column">
+        <div class="grid_form_">
+            <div class="entry column">
+                <div class="button button2" onclick="change_modal_viwe()">
+                    <span>Cancelar</span>
+                </div>
+            </div>
+            
+            <div class="entry column">
+                <button class="button" hx-post="{{ url_for('pdv.finalizar', pedido=dados.pedido_id ) }}" hx-target="#print" onclick="print_content_change()">
+                    <span>Finalizar</span>
+                </button>
+            </div>
+
+        </div>
+       
+
+    </form>
+
+</div>

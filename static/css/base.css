@@ -1,0 +1,246 @@
+/* Codigo Css do app */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+:root {
+    --primaria:   #ffffff;
+    --secundaria: #333333;
+    --fundo:      #d6d6d6;
+    --gelo:       #d2d2d2; 
+    --text:       #000;
+    --text2:      #FFF;
+
+}
+
+
+
+body {
+    background-color: var(--fundo);
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100dvh;
+
+    
+}
+
+
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.row2  {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.max_width   {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.button {
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 10px;
+    color: var(--text2);
+    background-color: var(--secundaria);
+    border: 0;
+    font-weight: 800;
+    font-size: .8rem;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.button2 {
+    background-color: var(--primaria);
+    color: var(--text);
+    box-shadow: 0 0 5px -1px #000000;
+}
+
+
+.table {
+    max-height: calc(100dvh - 170px);
+    overflow: auto;
+    position: relative;
+
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .89rem;
+}
+
+table thead {
+    background-color: var(--secundaria);
+    font-weight: bold;
+    color: var(--text2);
+    position: sticky;
+    top: 0;
+    left: 0;
+}
+
+table td {
+    padding: 10px;
+}
+
+.imput_ {
+    padding: 10px;
+    border: 0;
+    border-radius: 10px;
+    outline: none;
+    width: 100%;
+}
+
+
+/* modal */
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: #33333334;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay.ative {
+    display: flex;
+}
+
+.overlay.hide {
+    display: none;
+}
+
+.overlay .modal {
+    background-color: var(--primaria);
+    padding: 10px;
+    min-width: 200px;
+    border-radius: 10px;
+    min-height: 100px;
+    display: block;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+}
+
+
+/* finalizar pagamento */
+
+.grid_form_ {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.entry span {
+    font-size: .8rem;
+}
+
+.entry .input {
+    border: 0;
+    padding: 10px;
+    outline: none;
+    background-color: #33333338;
+    border-radius: 10px;
+}
+
+
+
+.print_area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    background-color: #00000059;
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.print_area.ative {
+    display: flex;
+}
+
+.print_content {
+    background-color: var(--primaria);
+    width: 300px;
+    min-height: 200px;
+    border-radius: 10px;
+    padding: 10px;
+
+    max-height: 700px;
+    overflow: auto;
+   
+
+}
+
+.print_area {
+    font-size: .7rem;
+}
+
+.print_content .header_print {
+    text-align: center;
+    font-size: .8rem;
+}
+
+.print_content table {
+    font-size: .6rem;
+}
+
+.row_button div.button {
+    width: 100%;
+    flex: 1;
+}
+
+
+@media print {
+    *{
+        display: none;
+    }
+    @page {
+        size: 80mm auto;
+        margin: 0;
+    }
+    body {
+        width: 80mm;
+        margin: 0;
+        font-family: monospace;
+        font-size: 12px;
+    }
+    .print_area {
+        opacity: 1;
+    }
+    .print_content {
+        opacity: 1;
+    }
+}

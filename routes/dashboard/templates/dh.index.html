@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dh.index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dh.home.css') }}">
+
+{% endblock %}
+
+{% block body %}
+
+<header class="column header">
+
+    <div class="header row max_width">
+
+
+        <div class="row2">
+            <i class="ri-user-line"></i>
+            <span>Olá, {{ current_user.nome.split()[0] }}</span>
+        </div>
+
+        <nav class="row2">
+            <a class="iten_menu" href="{{ url_for('dashboard.home' ) }}">
+                <i class="ri-function-line"></i>
+                <span>DashBoard</span>
+            </a>
+            <a class="iten_menu" href="{{ url_for('dashboard.pedidos' ) }}">
+                <i class="ri-file-list-line"></i>
+                <span>Pedidos</span>
+            </a>
+            <a href="{{ url_for('auth.logout' ) }}" class="iten_menu">
+                <i class="ri-logout-box-r-line"></i>
+                <span>Sair</span>
+            </a>
+        </nav>
+
+
+    </div>
+
+</header>
+
+<main id="root" class="content_app max_width" >
+    {% block content %}
+        
+    {% endblock %}
+</main>
+
+
+
+{% endblock %}
+
+
+{% block script %}
+
+
+{% endblock %}
