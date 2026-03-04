@@ -2,19 +2,9 @@ import os
 import importlib
 from flask import Flask, Blueprint
 
-from models import init_models
-from ext.admin import init_admin
-from ext.auth import init_auth
-
 app = Flask(__name__)
 app.secret_key = "mdmdln s asdasnjçasn s asdsnasdfsd"
 app.debug = True
-
-
-
-init_models()
-init_auth(app)
-init_admin(app)
 
 def register_blueprints(app):
     routes_dir = os.path.join(os.path.dirname(__file__), "routes")
@@ -34,5 +24,3 @@ def register_blueprints(app):
             pass
 
 register_blueprints(app)
-
-

@@ -28,19 +28,20 @@
 
 .auth .form {
     width:100%  ;
-    max-width: 350px;
-
+    
     display: flex;
     justify-content: center;
     align-items: center;
     
+    max-width: 350px;
 }
 
 .form form {
     width: 90%;
     height: 100%;
-
     max-height: 300px;
+    max-width: 350px;
+
 
     background-color: var(--primaria);
     padding: 20px;
@@ -69,4 +70,13 @@ a {
     text-decoration: none;
     font-weight: bold;
     color: blue;
+}
+
+@media (max-width: 1000px) {
+    .auth .banner {
+        display: none;
+    }
+    .auth .form  {
+        max-width: 100%;
+    }
 }

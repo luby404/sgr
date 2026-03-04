@@ -9,8 +9,8 @@
 
 :root {
     --primaria:   #ffffff;
-    --secundaria: #333333;
-    --fundo:      #d6d6d6;
+    --secundaria: #c91717;
+    --fundo:      #ffffff;
     --gelo:       #d2d2d2; 
     --text:       #000;
     --text2:      #FFF;
@@ -38,6 +38,13 @@ body {
     justify-content: space-between;
 }
 
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .row2  {
     display: flex;
     align-items: center;
@@ -52,12 +59,12 @@ body {
 
 .max_width   {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
 .button {
-    padding: 10px;
+    padding: 10px 20px;
     text-decoration: none;
     border-radius: 10px;
     color: var(--text2);
@@ -77,6 +84,11 @@ body {
     background-color: var(--primaria);
     color: var(--text);
     box-shadow: 0 0 5px -1px #000000;
+}
+
+.button3 {
+    background-color: #ffffff6e;
+    color: var(--text1);
 }
 
 

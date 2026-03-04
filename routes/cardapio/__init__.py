@@ -8,14 +8,15 @@ from flask import (
     render_template
 )
 
-lp = Blueprint(
-    "lp",
+cardapio = Blueprint(
+    "cardapio",
     __name__,
-    url_prefix="/",
+    url_prefix="/cardapio",
     template_folder=os.path.join(os.path.dirname(__file__), "templates")
 )
 
 
-@lp.get("/")
+@cardapio.get("/")
 def index():
-    return render_template("lp.index.html")
+    
+    return render_template("cardapio.index.html")
