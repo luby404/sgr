@@ -1,0 +1,110 @@
+.dashboard {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+}
+
+
+.content_menu {
+    display: flex;
+    padding: 10px;
+
+}
+
+.content_menu .menu {
+    position: relative;
+}
+
+
+.menu .iten_menu {
+    background-color: #d2d2d2;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    border-radius: 10px;
+    cursor: pointer;
+
+    text-decoration: none;
+}
+.menu .iten_menu.ative, .menu .iten_menu:hover {
+    background-color: var(--secundaria);
+    color: var(--text2);
+}
+
+.menu .iten_menu  i {
+    font-size: 1.3rem;
+}
+
+.menu .iten_menu span {
+    display: none;
+    font-size: .8rem;
+    position: absolute;
+    left: 50px;
+    background-color: var(--secundaria);
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: var(--text2);
+    z-index: 99999;
+    font-weight: bold;
+}
+
+.menu .iten_menu:hover > span {
+    display: flex;
+}
+
+.menu .iten_menu:last-child {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+
+.content_dashboard {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    padding: 1rem;
+}
+
+
+/* home */
+.content_app_home {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.gri_cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    width: 70%;
+}
+.gri_cards .card {
+    height: 120px;
+    border-radius: 10px;
+
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 0 10px -2px #00000050;
+
+}
+
+.gri_cards .card .column {
+    text-align: end;
+}
+
+.gri_cards .card i {
+    font-size: 3rem;
+    position: relative;
+    top: -10px;
+    color: var(--secundaria);
+}
+.gri_cards .card span {
+    font-size: .9rem;
+    opacity: .6;
+    font-weight: bold;
+}

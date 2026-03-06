@@ -3,6 +3,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/cardapio.index.css') }}">
+<title>Cardapio</title>
 {% endblock %}
 
 {% block body %}
@@ -11,7 +12,8 @@
     <strong>Nome do Restaurante</strong>
 
 
-    <div class="btn_carrinho">
+    <div class="btn_carrinho" onclick="change_overlay()" hx-get="{{ url_for('cardapio.carrinho' ) }}"
+        hx-target="#overlay">
         <i class="ri-shopping-cart-line"></i>
         <span>0</span>
     </div>
@@ -42,96 +44,24 @@
             <div class="card_produto">
                 <img src="{{ url_for('static', filename='img/produto.jpeg') }}" alt="">
                 <strong>Nome do produto</strong>
-                <a href="" class="button">
+                <div href="" class="button" onclick="change_overlay()" hx-get="{{ url_for('cardapio.produto' ) }}" hx-target="#overlay">
                     <i class="ri-shopping-cart-line"></i>
                     <strong>2.500,00</strong>
-                </a>
+                </div>
             </div>
             {% endfor %}
         </div>
 
     </section>
 
-    <section class="overylay">
+    
 
-        <div class="content_carrinho column">
 
-            <div class="car_btn_close">
-                <i class="ri-close-line"></i>
-            </div>
-
-            <div class="row center">
-                <strong>Meu Pedido</strong>
-            </div>
-            <div class="lista_produtos">
-
-                {% for produto in range(3) %}
-                <div class="iten_produtos row">
-                    <div class="row2">
-                        <img src="{{ url_for('static', filename='img/produto.jpeg') }}" alt="">
-                        <div class="infos column">
-                            <div class="row">
-                                <strong>Nome do produto (x2)</strong>
-                            </div>
-                            <span>2.500,00</span>
-                        </div>
-                    </div>
-                    <div class="button">
-                        <i class="ri-delete-bin-line"></i>
-                    </div>
-                </div>
-                {% endfor %}
-
-            </div>
-            <div class="row">
-                <div class="row2">
-                    <strong>Total:</strong>
-                    <strong>8,450,00</strong>
-                </div>
-                <div class="button">
-                    <span>Enviar Pedido</span>
-                    <i class="ri-send-plane-line"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="content_produto_modal column">
-
-            <div class="car_btn_close">
-                <i class="ri-close-line"></i>
-            </div>
-
-            <div class="infos column center">
-                <img src="{{ url_for('static', filename='img/produto.jpeg') }}" alt="">
-                <strong class="center">Nome do produto</strong>
-                <p style="text-align: center; font-size: .8rem; opacity: .7;">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti, eos pariatur? Nisi quo voluptate
-                    delectus!
-                </p>
-
-            </div>
-            <div class="qtd center">
-                <div class="btn">
-                    <i class="ri-subtract-fill"></i>
-                </div>
-                <span class="value">1</span>
-                <div class="btn">
-                    <i class="ri-add-fill"></i>
-                </div>
-            </div>
-
-            <div class="row">
-                <strong>2.500,00</strong>
-                <div class="button">
-                    <span>Adicionar</span>
-                    <i class="ri-shopping-cart-line"></i>
-                </div>
-            </div>
-
-        </div>
-
-    </section>
 
 </main>
 
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/cardapio.js') }}"></script>
 {% endblock %}

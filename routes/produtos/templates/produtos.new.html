@@ -1,0 +1,83 @@
+<div class="modal">
+
+    <div class="column">
+        <div class="row">
+            <strong>Novo Produto</strong>
+
+            <div class="btn_close button" onclick="change_overlay()">
+                <i class="ri-close-line"></i>
+            </div>
+        </div>
+
+        <form action="{{ url_for('produtos.new' ) }}" method="post" class="column">
+            <div class="row2">
+
+
+                <div class="box_image_preview column">
+                    <div class="img_content_preview" id="content_img_preview_rbk">
+                        <i class="ri-image-fill"></i>
+                    </div>
+                    <label for="file_img" class="button">
+                        <i class="ri-image-fill"></i>
+                        <span>Selecionar imagen</span>
+                    </label>
+                </div>
+
+
+
+                <div class="grid_form_">
+
+                    <input style="display: none;" accept="image/" type="file" name="capa" id="file_img" class="input">
+
+                    <div class="entry column">
+                        <span>Nome *</span>
+                        <input type="text" required name="nome" class="input" placeholder="Nome do produto">
+                    </div>
+                    <div class="entry column">
+                        <span>Preço *</span>
+                        <input type="number" required name="price" class="input" placeholder="Preço do produto">
+                    </div>
+                    <div class="entry column">
+                        <span>Descrição (opcional)</span>
+                        <input type="text" name="descricao" class="input" placeholder="Descrição do produto">
+                    </div>
+                    <div class="entry column">
+                        <span>Categoria *</span>
+                        <select name="categoria" class="input" id="">
+                            <option value="">Selecinar Categoria</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div></div>
+            <hr>
+            <div></div>
+
+            <div class="row">
+                <span></span>
+                <button class="button" style="width: 200px; padding: 15px;">
+                    <span>Salvar</span>
+                </button>
+            </div>
+        </form>
+
+
+    </div>
+
+</div>
+
+<script>
+
+    document.querySelector("#file_img").addEventListener("change", function (e) {
+        const preview = document.querySelector("#content_img_preview_rbk")
+        preview.innerHTML = ""
+        const url = URL.createObjectURL(document.querySelector("#file_img").files[0])
+
+        let img = document.createElement("img")
+        img.src = url
+
+        preview.appendChild(img)
+
+    })
+
+</script>

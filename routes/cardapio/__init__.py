@@ -19,4 +19,26 @@ cardapio = Blueprint(
 @cardapio.get("/")
 def index():
     
-    return render_template("cardapio.index.html")
+    class dados:
+        intens_carrinho = 0
+        produtos   = []
+        categorias = []
+    
+    return render_template("cardapio.index.html", dados=dados)
+
+
+@cardapio.route("/produto")
+def produto():
+    return render_template("cardapio.produto.html")
+
+
+@cardapio.route("/carrinho", methods=["POST", "GET", "DELETE"])
+def carrinho():
+    
+    if request.method == "POST":
+        session["carrrinho"] = {}
+        
+        return redirect(url_for("cardapio.index"))
+    
+    return render_template("cardapio.carrinho.html")
+

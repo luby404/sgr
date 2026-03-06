@@ -1,0 +1,52 @@
+{% extends 'leyout.html' %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<title>Dashboard</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="dashboard">
+
+    <section class="content_menu">
+        <div class="menu column" id="content_menu_btns">
+
+            <a href="{{ url_for('dashboard.index', name='home' ) }}" class="iten_menu">
+                <i class="ri-line-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('dashboard.index', name='produto' ) }}" class="iten_menu">
+                <i class="ri-box-3-line"></i>
+                <span>Produtos</span>
+            </a>
+            <a href="{{ url_for('dashboard.index', name='pedidos' ) }}" class="iten_menu">
+                <i class="ri-file-list-line"></i>
+                <span>Pedidos</span>
+            </a>
+            <a href="{{ url_for('dashboard.index', name='usuarios' ) }}" class="iten_menu">
+                <i class="ri-group-line"></i>
+                <span>Usuarios</span>
+            </a>
+            <a href="{{ url_for('dashboard.index', name='config' ) }}" class="iten_menu">
+                <i class="ri-settings-3-line"></i>
+                <span>Configurações</span>
+            </a>
+
+        </div>
+    </section>
+
+
+    <section class="content_dashboard column">
+        {{ dados.view | safe }}
+    </section>
+
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/dh.index.js') }}"></script>
+{% endblock %}

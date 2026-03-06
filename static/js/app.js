@@ -1,17 +1,18 @@
 // Script js para o app
 
-const overlay       = document.querySelector("#overlay")
-const print_content = document.querySelector("#print_content")
+var isOpen = false
 
+function change_overlay(){
+    let overlay = document.querySelector("#overlay")
 
-function change_modal_viwe() {
     overlay.classList.toggle("ative")
-    overlay.classList.toggle("hide")
-}
+    isOpen = !isOpen
 
-function print_content_change() {
-    print_content.classList.toggle("ative")
-    print_content.classList.toggle("hide")
+    if (isOpen){
+        overlay.innerHTML = ""
+    }
+
+    console.log(isOpen)
 }
 
 
