@@ -8,7 +8,8 @@ from models import (
     Empresa,
     Pagamento,
     Assinatura,
-    Plano
+    Plano,
+    Produto, Categoria, Mesa, Pedido, ItenPedido
     
 )
 
@@ -17,23 +18,41 @@ from admin.empresa import EmpresaAdmin
 from admin.assinatura import AssinaturaAdmin
 from admin.planos import PlanosAdmin
 from admin.pagamentos import PagamentoAdmin
+from admin.categorias import CategoriaAdmin
+from admin.mesas import MesaAdmin
+from admin.pedidos import PedidoAdmin
 
-#lux
+# empresa
+from admin.produtos import ProdutosAdmin
+
+#lux, pulse, journal
 
 admin = Admin(
     name="Painel Adminstrativo",
     theme=Bootstrap4Theme(
-        swatch="lux", 
-        fluid=False,
+        swatch="journal", 
+        fluid=True,
     )
 )
+
+class categoria_admin:
+    cardapio = "Cardapio"
+    operacao = "Operação"
+    
 
 admin.add_views(
     UsuarioAdmin(Usuario),
     EmpresaAdmin(Empresa),
+    
     PlanosAdmin(Plano),
     AssinaturaAdmin(Assinatura),
-    PagamentoAdmin(Pagamento)
+    PagamentoAdmin(Pagamento),
+    
+    CategoriaAdmin(Categoria, category=categoria_admin.cardapio),
+    ProdutosAdmin(Produto, category=categoria_admin.cardapio),
+    #
+    MesaAdmin(Mesa, category=categoria_admin.operacao),
+    PedidoAdmin(Pedido, category=categoria_admin.operacao)
     
 
 )
