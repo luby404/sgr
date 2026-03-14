@@ -4,27 +4,31 @@
         <i class="ri-close-line"></i>
     </div>
 
-    <div class="row center">
+    <div class="column center">
         <strong>Meu Pedido</strong>
+        <strong>Mesa: {{ mesa.nome }}</strong>
     </div>
 
     <div class="lista_produtos">
 
-        {% for produto in range(3) %}
+        {% for id, produto in carrinho.items() %}
         <div class="iten_produtos row">
             <div class="row2">
-                <img src="{{ url_for('static', filename='img/produto.jpeg') }}" alt="">
+                <img class="produto_modal_img"
+                    src="{{ url_for('static', filename='uploads/produtos/{}'.format(produto['capa'])) }}" alt="">
                 <div class="infos column">
                     <div class="row">
-                        <strong>Nome do produto (x2)</strong>
+                        <strong>{{ produto["nome"] }} (x{{ produto["qtd"] }})</strong>
                     </div>
-                    <span>2.500,00</span>
+                    <span>{{ produto["diaplay_price"] }}</span>
                 </div>
             </div>
-            <div class="button">
+            <div class="button" hx-delete="{{ url_for('cardapio.carrinho_delete', mesa=mesa.uuid, id=id ) }}"
+                hx-target="#overlay" , hx-confirm="Deseja deletar o produto?">
                 <i class="ri-delete-bin-line"></i>
             </div>
         </div>
+        <hr>
         {% endfor %}
 
     </div>
@@ -32,12 +36,23 @@
     <div class="row">
         <div class="row2">
             <strong>Total:</strong>
-            <strong>8,450,00</strong>
+            <strong>{{ total }}</strong>
         </div>
-        <div class="button">
+        <a href="{{ url_for('cardapio.new_pedido', mesa=mesa.uuid ) }}" class="button" id="button_send">
             <span>Enviar Pedido</span>
             <i class="ri-send-plane-line"></i>
-        </div>
+        </a>
     </div>
 
 </div>
+
+<script>
+    document.querySelector("#button_send").addEventListener("click", function (e) {
+        const cfn = confirm("Tem a certeza que deseja enviar o pedido ?")
+        if (!cfn){
+            e.preventDefault()
+        }
+
+    })
+
+</script>

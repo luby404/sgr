@@ -1,0 +1,75 @@
+{% extends 'leyout.html' %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cardapio.index.css') }}">
+<title>Cardapio</title>
+{% endblock %}
+
+{% block body %}
+<header class="row max_width header_app">
+
+    <strong>Meu Pedido</strong>
+
+    {% if dados.status_pedido in ["entregue"] %}
+
+    <a href="" class="button">
+        <span>Solicitar fecho</span>
+    </a>
+    {% endif %}
+
+
+
+</header>
+<hr class="max_width">
+<main class="column max_width">
+
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <td>Produto</td>
+                    <td>Quantidade</td>
+                    <td>Preço</td>
+                    <td>Sub total</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in dados.lista_produtos %}
+                <tr>
+                    <td>{{ produto.produto_nome }}</td>
+                    <td>x{{ produto.quantidate }}</td>
+                    <td>{{ produto.produto_price }}</td>
+                    <td>{{ produto.subtotal }}</td>
+                </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="row">
+        <span></span>
+        <div class="column">
+            <div class="row2">
+                <span>Mesa:</span><strong> {{ dados.mesa_pedido }}</strong>
+            </div>
+            <div class="row2">
+                <span>Total:</span><strong> {{ dados.total }}</strong>
+            </div>
+            <div class="row2">
+                <span>Status:</span><strong> {{ dados.status_pedido }}</strong>
+            </div>
+        </div>
+    </div>
+
+
+
+</main>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

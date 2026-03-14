@@ -9,44 +9,57 @@
 {% block body %}
 <header class="row max_width header_app">
 
-    <strong>Nome do Restaurante</strong>
+    <strong>{{ dados.nome_restaurante }}</strong>
 
 
-    <div class="btn_carrinho" onclick="change_overlay()" hx-get="{{ url_for('cardapio.carrinho' ) }}"
+    <div class="btn_carrinho" onclick="change_overlay()" hx-get="{{ url_for('cardapio.carrinho', mesa=dados.mesa_id ) }}"
         hx-target="#overlay">
         <i class="ri-shopping-cart-line"></i>
-        <span>0</span>
+        <span>{{ dados.carrinho }}</span>
     </div>
 
 </header>
 <main class="column">
 
     <section class="banner max_width">
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        </p>
+        
     </section>
 
     <section class="categorias max_width column">
         <strong>Categorias</strong>
         <div class="content_categorias row2">
-            <a href="" class="ative">Todas</a>
-            <a href="">Bebidas</a>
-            <a href="">Lanches</a>
-            <a href="">Petiscos</a>
+            {% if dados.categoria_id %}
+                <a href="?categoria=all" class="">Todas</a>
+            {% else %}
+                <a href="?categoria=all" class="ative">Todas</a>
+            {% endif %}
+
+            {% for categoria in dados.categorias %}
+                {% if dados.categoria_id == categoria.id %}
+                    <a href="?categoria={{ categoria.id }}" class="ative">{{ categoria.nome }}</a>
+                {% else %}
+                    
+                    <a href="?categoria={{ categoria.id }}">{{ categoria.nome }}</a>
+                {% endif %}
+            {% endfor %}
+            
         </div>
     </section>
 
     <section class="produtos max_width column" id="produtos_content">
 
         <div class="content_produtos">
-            {% for produto in range(8) %}
+            {% for produto in dados.produtos %}
+            
             <div class="card_produto">
-                <img src="{{ url_for('static', filename='img/produto.jpeg') }}" alt="">
-                <strong>Nome do produto</strong>
-                <div href="" class="button" onclick="change_overlay()" hx-get="{{ url_for('cardapio.produto' ) }}" hx-target="#overlay">
+                <img src="{{ url_for('static', filename='uploads/produtos/{}'.format(produto.capa)) }}" alt="">
+                <strong>{{ produto.nome }}</strong>
+                <div href="" class="button" 
+                onclick="change_overlay()" 
+                hx-get="{{ url_for('cardapio.produto', id=produto.id, mesa=dados.mesa_id ) }}" 
+                hx-target="#overlay">
                     <i class="ri-shopping-cart-line"></i>
-                    <strong>2.500,00</strong>
+                    <strong>{{ produto.price}}</strong>
                 </div>
             </div>
             {% endfor %}

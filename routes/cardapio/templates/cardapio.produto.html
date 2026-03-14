@@ -1,18 +1,18 @@
-<form class="content_produto_modal column"
-    action="{{ url_for('cardapio.carrinho' ) }}"
-    method="post"
->
+<form class="content_produto_modal column" action="{{ url_for('cardapio.carrinho', mesa=mesa.uuid ) }}" method="post">
 
-    <div class="car_btn_close" onclick="change_overlay()">
-        <i class="ri-close-line"></i>
+    <div class="row">
+        <span>Adicionar no carrinho</span>
+        <div class=" button" onclick="change_overlay()">
+            <i class="ri-close-line"></i>
+        </div>
     </div>
 
     <div class="infos column center">
-        <img src="{{ url_for('static', filename='img/produto.jpeg') }}" alt="">
-        <strong class="center">Nome do produto</strong>
+        <img class="produto_modal_img"
+            src="{{ url_for('static', filename='uploads/produtos/{}'.format(produto.capa)) }}" alt="">
+        <strong class="center">{{ produto.nome }}</strong>
         <p style="text-align: center; font-size: .8rem; opacity: .7;">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti, eos pariatur? Nisi quo voluptate
-            delectus!
+            {{ produto.descricao }}
         </p>
 
     </div>
@@ -20,6 +20,7 @@
         <div class="btn" onclick="sub()">
             <i class="ri-subtract-fill"></i>
         </div>
+        <input type="hidden" name="produto" value="{{ produto.id }}">
         <input type="number" name="qtd" value="1" id="value">
         <div class="btn" onclick="add()">
             <i class="ri-add-fill"></i>
@@ -27,7 +28,7 @@
     </div>
 
     <div class="row">
-        <strong>2.500,00</strong>
+        <strong>{{ produto.price }}</strong>
         <button class="button">
             <span>Adicionar</span>
             <i class="ri-shopping-cart-line"></i>
@@ -41,10 +42,10 @@
 
     var input = document.querySelector("input#value")
 
-    function add(){
+    function add() {
         input.value = parseInt(input.value) + 1
     }
-    function sub(){
+    function sub() {
         input.value = parseInt(input.value) - 1
         if (input.value < 0) input.value = 0
     }
