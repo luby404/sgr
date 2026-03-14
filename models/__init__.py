@@ -3,13 +3,14 @@ from .models import (
     Usuario,
     Empresa,
     Produto,
-    Comanda,
+    Mesa,
     Pedido,
     ItenPedido,
     Pagamento,
     Assinatura,
     Plano,
-    Categoria
+    Categoria,
+    generate_password_hash
     
 )
 
@@ -20,7 +21,7 @@ def init_db():
          Usuario,
         Empresa,
         Produto,
-        Comanda,
+        Mesa,
         Pedido,
         ItenPedido,
         Pagamento,
@@ -28,7 +29,15 @@ def init_db():
         Plano,
         Categoria
     ])
-
+    try: 
+        Usuario.create(
+            nome="Ricardo Cayoca",
+            email="ricardokayoca@gmail.com",
+            senha=generate_password_hash("admin"),
+            user_type=Usuario.roles.admin
+        )
+    except:
+        pass
 
 
 

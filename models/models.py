@@ -1,7 +1,10 @@
 import uuid
 from .db import orm, Model
 from datetime import datetime, timedelta
+from flask_login import UserMixin
 
+
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class Empresa(Model):
     nome  = orm.CharField(unique=True)
@@ -12,10 +15,10 @@ class Empresa(Model):
    
     is_ative    = orm.BooleanField(default=True)
 
-class Usuario(Model):
+class Usuario(Model, UserMixin):
     
     class roles:
-        admin   = "admin"
+        admin   = "admin" # admin do sistema
         gestor  = "empresa_gestor"
         balcao  = "empresa_balcao"
         empresa = "empresa_admin"
@@ -27,13 +30,30 @@ class Usuario(Model):
     user_type = orm.CharField(choices=[(i, i) for i in [roles.admin, roles.gestor, roles.balcao, roles.empresa]])
     empresa   = orm.ForeignKeyField(Empresa, backref="usuarios", null=True) 
     
+    def check_password(self, senha:str):
+        return check_password_hash(self.senha, senha)
+    
+    def set_password(self, senha:str):
+        self.senha = generate_password_hash(senha)
+        return self.senha
+    
 
 class Categoria(Model):
     nome            = orm.CharField()
     is_ative        = orm.BooleanField(default=True)
     empresa:Empresa = orm.ForeignKeyField(Empresa, backref="produtos")
+    
+    cardapio        = orm.BooleanField(default=True)
+    
+    
+    def __str__(self):
+        return self.nome
+    
 
 class Produto(Model):
+    
+    
+    
     empresa:Empresa     = orm.ForeignKeyField(Empresa, backref="produtos")
     categoria:Categoria = orm.ForeignKeyField(Categoria, backref="produtos")
     
@@ -42,12 +62,14 @@ class Produto(Model):
     descricao       = orm.TextField()
     price           = orm.DecimalField(decimal_places=2, max_digits=16)
     is_ative        = orm.BooleanField(default=True)
-    estoque         = orm.IntegerField(default=0)
+    estoque         = orm.IntegerField(default=0)    
+    
+    cardapio        = orm.BooleanField(default=True)
 
-class Comanda(Model):
-    empresa:Empresa = orm.ForeignKeyField(Empresa, backref="comandas")
+class Mesa(Model):
+    empresa:Empresa = orm.ForeignKeyField(Empresa, backref="mesas")
     nome            = orm.CharField()
-    uuid            = orm.UUIDField(default=uuid.uuid4())
+    uuid            = orm.UUIDField(default=uuid.uuid4)
     status:bool     = orm.BooleanField(default=True) # true="aberto" false="fechado"
     
 
@@ -61,14 +83,20 @@ class Pedido(Model):
         cancelado  = "cancelado"
     
     empresa = orm.ForeignKeyField(Empresa, backref="pedidos")
-    comando = orm.ForeignKeyField(Comanda, backref="pedidos")
+    mesa    = orm.ForeignKeyField(Mesa, backref="pedidos")
     
     aberto_em  = orm.DateTimeField(default=datetime.now)
     fechado_em = orm.DateTimeField(default=datetime.now)  
     
     total      = orm.DecimalField(max_digits=16, decimal_places=2, default=0)
+    status     = orm.CharField(default=Status.pendente, choices=[
+        (i, i) for i in [Status.pendente, Status.preparacao, Status.entregue, Status.finalizado, Status.cancelado]
+    ])
 
 class ItenPedido(Model):
+    
+    pubid   = orm.UUIDField(default=uuid.uuid4)
+    
     empresa = orm.ForeignKeyField(Empresa, backref="pedidos")
     pedido  = orm.ForeignKeyField(Pedido, backref="produtos")
     produto = orm.ForeignKeyField(Produto, backref="produtos")
