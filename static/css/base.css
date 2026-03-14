@@ -36,6 +36,7 @@ body {
     align-items: center;
     gap: 10px;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 
@@ -141,6 +142,7 @@ table td {
     bottom: 0;
 
     background-color: #00000034;
+    backdrop-filter: blur(10px);
     display: none;
     
 }

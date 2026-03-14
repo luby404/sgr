@@ -13,11 +13,11 @@
 
 .content_menu .menu {
     position: relative;
+    width: 170px;
 }
 
 
 .menu .iten_menu {
-    background-color: #d2d2d2;
     padding: 10px;
     display: flex;
     align-items: center;
@@ -38,15 +38,8 @@
 }
 
 .menu .iten_menu span {
-    display: none;
     font-size: .8rem;
-    position: absolute;
-    left: 50px;
-    background-color: var(--secundaria);
-    padding: 10px 20px;
     border-radius: 10px;
-    color: var(--text2);
-    z-index: 99999;
     font-weight: bold;
 }
 

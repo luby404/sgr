@@ -94,6 +94,11 @@ main {
 
 .content_produtos .card_produto img {
     max-width: 120px;
+    max-height: 50%;
+}
+
+.content_produtos .card_produto .button {
+    width: 100%;
 }
 
 /* carrinho */
@@ -114,8 +119,7 @@ main {
 .overylay.ative {
     display: flex;
 }
-
-.overylay .content_carrinho {
+.content_carrinho {
     background-color: #FFF;
     width: 100%;
     max-width: 400px;
@@ -130,7 +134,7 @@ main {
 }
 
 
-.overylay .car_btn_close {
+.car_btn_close {
     position: absolute;
     top: 10px;
     left: -15px;
@@ -154,6 +158,7 @@ main {
 
 .iten_produtos img {
     max-width: 100px;
+    max-height: 100px;
 }
 
 /* modal produto */
@@ -172,6 +177,10 @@ main {
 }
 .content_produto_modal img {
     max-width: 50%;
+}
+
+.produto_modal_img {
+    max-height: 150px;
 }
 
 .qtd {
