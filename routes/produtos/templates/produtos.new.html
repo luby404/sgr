@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <form action="{{ url_for('produtos.new' ) }}" method="post" class="column">
+        <form enctype="multipart/form-data" action="{{ url_for('produtos.new' ) }}" method="post" class="column">
             <div class="row2">
 
 
@@ -45,6 +45,9 @@
                         <span>Categoria *</span>
                         <select name="categoria" class="input" id="">
                             <option value="">Selecinar Categoria</option>
+                            {% for categoria in dados.categorias %}
+                                <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>

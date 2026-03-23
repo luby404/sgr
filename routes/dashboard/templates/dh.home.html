@@ -1,76 +1,45 @@
-<div class="row">
-    <div class="column" style="gap: 5px;">
-        <strong>Dashboard</strong>
-        <span>Gerencie seus produtos na velocidade so som</span>
+
+<div class="content_app_home column">
+    <div class="column center">
+        <h3>Olá, {{ dados.user_name }}</h3>
+        <div class="row2">
+            <span>Vendas de Hoje:</span>
+            <strong>{{ dados.vendas_do_dia }}</strong>
+        </div>
     </div>
-
-    <div class="row2">
-        <form action="" class="row2">
-            <div class="row2">
-                <span>De</span>
-                <input type="date" name="start" required>
-            </div>
-            <div class="row2">
-                <span>Até</span>
-                <input type="date" name="start" required>
-            </div>
-            <button class="button">
-                <i class="ri-filter-line"></i>
-            </button>
-        </form>
-    </div>
-</div>
-
-
-<div class="content_app_home">
-
+    <span></span><span></span>
     <div class="gri_cards">
 
         <div class="card">
             <i class="ri-time-line"></i>
             <div class="column">
-                <strong>0</strong>
+                <strong>{{ dados.pedidos_pendentes }}</strong>
                 <span>Pedidos pendentes</span>
             </div>
         </div>
         <div class="card">
-            <i class="ri-check-line"></i>
+            <i class="ri-check-line"></i>   
             <div class="column">
-                <strong>0</strong>
+                <strong>{{ dados.pedidos_em_preparacao }}</strong>
                 <span>Pedidos Em Preparação</span>
+            </div>
+        </div>
+        <div class="card">
+            <i class="ri-restaurant-2-line"></i>
+            <div class="column">
+                <strong>{{ dados.pedidos_entreges }}</strong>
+                <span>Pedidos Entregues</span>
             </div>
         </div>
         <div class="card">
             <i class="ri-check-double-line"></i>
             <div class="column">
-                <strong>0</strong>
+                <strong>{{ dados.pedidos_finalizados }}</strong>
                 <span>Pedidos finalizados</span>
             </div>
         </div>
         
-
-        <div class="card">
-            <i class="ri-box-3-line"></i>
-            <div class="column">
-                <strong>0</strong>
-                <span>Produtos Vendidos</span>
-            </div>
-        </div>
-        <div class="card">
-            <i class="ri-line-chart-line"></i>
-            <div class="column">
-                <strong>0</strong>
-                <span>Total de Vendas</span>
-            </div>
-        </div>
         
-        <div class="card">
-            <i class="ri-pie-chart-line"></i>
-            <div class="column">
-                <strong>0</strong>
-                <span>Ticket Médio</span>
-            </div>
-        </div>
 
     </div>
 

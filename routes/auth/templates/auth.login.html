@@ -1,0 +1,46 @@
+{% extends 'leyout.html' %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+<title>Login</title>
+{% endblock %}
+
+{% block body %}
+
+<section class="auth">
+    
+    <div class="form">
+
+        <form action="" class="column" method="post">
+
+            <h2>Login</h2>
+
+            <div class="entry column">
+                <span class="text">Email</span>
+                <input type="email" name="email" placeholder="Seu email" required>
+            </div>
+            <div class="entry column">
+                <span class="text">Senha</span>
+                <input type="password" name="senha" placeholder="Sua Senha" required>
+            </div>
+
+            {% set msg = get_flashed_messages() %}
+            <div class="column center">
+
+                <p class="text">
+                    {{ msg[-1] }}
+                </p>
+
+            </div>
+            <button class="button">
+                <span>Entrar</span>
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -83,7 +83,7 @@ class Pedido(Model):
         cancelado  = "cancelado"
     
     empresa = orm.ForeignKeyField(Empresa, backref="pedidos")
-    mesa    = orm.ForeignKeyField(Mesa, backref="pedidos")
+    mesa    = orm.ForeignKeyField(Mesa, backref="pedidos", null=True)
     
     aberto_em  = orm.DateTimeField(default=datetime.now)
     fechado_em = orm.DateTimeField(default=datetime.now)  

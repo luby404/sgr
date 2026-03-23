@@ -138,12 +138,17 @@ table td {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    
+
+    width: 100vw;
+    height: 100dvh;
 
     background-color: #00000034;
     backdrop-filter: blur(10px);
     display: none;
+
+    z-index: 100;
+
     
 }
 
@@ -182,6 +187,7 @@ table td {
     outline: none;
     background-color: #33333338;
     border-radius: 10px;
+    width: 100%;
 }
 
 
@@ -271,24 +277,3 @@ table td {
     width: 80%;
 }
 
-@media print {
-    *{
-        display: none;
-    }
-    @page {
-        size: 80mm auto;
-        margin: 0;
-    }
-    body {
-        width: 80mm;
-        margin: 0;
-        font-family: monospace;
-        font-size: 12px;
-    }
-    .print_area {
-        opacity: 1;
-    }
-    .print_content {
-        opacity: 1;
-    }
-}

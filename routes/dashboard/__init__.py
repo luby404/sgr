@@ -3,6 +3,18 @@ from flask import *
 
 from .views import pages
 
+from models import Produto, Categoria, Usuario, Mesa, ItenPedido, Pedido, Empresa
+
+from flask_login import current_user, login_required
+
+
+from utils import converte_moeda
+
+from datetime import datetime, timedelta, date
+
+current_user:Usuario
+
+
 dashboard = Blueprint(
     "dashboard",
     __name__,
@@ -11,24 +23,157 @@ dashboard = Blueprint(
 )
 
 @dashboard.get("/")
-@dashboard.get("/<name>")
+@dashboard.route("/<name>", methods=["GET", "POST", "DELETE", "PUT"])
 def index(name=None):
     if not name:
         name = "home"
     
+    empresa:Empresa = Empresa.get_or_none(Empresa.id == current_user.empresa)
+    
+    categoria:Categoria = Categoria.get_or_none(Categoria.id == request.args.get("categoria", None))
+    
+    status_pedido:Pedido.Status = Pedido.Status
     
     class Dados:
-        ...
+        
+        user_name = current_user.nome
+        
+        # dashboard
+        pedidos_pendentes     = 0
+        pedidos_entreges      = 0
+        pedidos_em_preparacao = 0
+        pedidos_finalizados   = 0
+        vendas_do_dia         = 0
+        
+        
+        view = ""
+        produtos_pedido = []
+        pedido_total = 0
+        pedido_mesa = Pedido
+        status = request.args.get("status", status_pedido.pendente)
+        
+        carrinho = session.get("carrinho", {})
+        
+        produtos = []
+        
+        categorias = []
+        pedidos    = [p for p in Pedido.select().where(
+           ( Pedido.empresa == empresa) &
+            (Pedido.status == status)
+        )]
+        
+        alert = True if len(pedidos) > 0 else False
+        
+        #pedidos.reverse()
+        
+        pedido_status = (status_pedido.pendente, status_pedido.preparacao, status_pedido.entregue, status_pedido.finalizado, status_pedido.cancelado)
+        
+        if categoria:
+            categoria_id = categoria.id
+        else:
+            categoria_id = categoria
+    
     
     if name in pages:
-        print(name)
+        
+        if name == "home":
+            # cacular dados de resumo
+            data_hoje = datetime.now()
+            
+            
+            query_pedidos = Pedido.select().where(
+                (Pedido.empresa == empresa) &
+                (Pedido.criado_em <= data_hoje)
+            )
+            query_finalizados = query_pedidos.where(Pedido.status == status_pedido.finalizado)
+            
+            Dados.pedidos_pendentes     = query_pedidos.where(Pedido.status == status_pedido.pendente).count()
+            Dados.pedidos_em_preparacao = query_pedidos.where(Pedido.status == status_pedido.preparacao).count()
+            Dados.pedidos_entreges      = query_pedidos.where(Pedido.status == status_pedido.entregue).count()
+            Dados.pedidos_finalizados   = query_finalizados.count()
+            
+            Dados.vendas_do_dia = converte_moeda( sum(
+                [float(i.total) for i in query_finalizados]
+            ) )
+        
+        mesa:Mesa = Mesa.get_or_none(Mesa.id == request.args.get("mesa", None))
+        if name == "view_pedido" and mesa:
+            pedido:Pedido = Pedido.select().where(Pedido.mesa == mesa)[-1]
+            if pedido:
+                if pedido.status not in [Pedido.Status.finalizado, Pedido.Status.cancelado]:
+                    Dados.pedido_mesa = pedido
+                    for produto in ItenPedido.select().where(ItenPedido.pedido == pedido):
+                        produto.price = converte_moeda(produto.produto_price)
+                        Dados.produtos_pedido.append(produto)
+                        Dados.pedido_total += produto.subtotal
+            
+                    print("iten do produto encontrado.")
+                    Dados.pedido_total = converte_moeda(Dados.pedido_total)
+        if name == "pos":
+            
+            query_produtos = Produto.select().where(
+                Produto.empresa == empresa & 
+                Produto.cardapio
+            )
+            # filtrar por categoria
+            if categoria:
+                query_produtos = query_produtos.where(
+                    Produto.categoria == categoria
+                )
+            
+            for produto in query_produtos:
+                produto.price = converte_moeda(produto.price)
+                Dados.produtos.append(produto)
+                
+                
+            Dados.categorias = Categoria.select().where(Categoria.empresa == empresa)
+            
+        
         Dados.view =  render_template(pages[name], dados=Dados)
+        
     else:
         return render_template("404.html")
+    
+    if request.args.get("view", False):
+        return Dados.view
 
     return render_template("dh.index.html", dados=Dados)
 
 
+@dashboard.post("/update_pedido/<id>")
+def update_pedido(id):
+    pedido:Pedido = Pedido.get_or_none(Pedido.id == id)
+    new_status    = request.form.get("status_update", Pedido.Status.pendente)
+    if pedido:
+        pedido.status = new_status
+        mesa:Mesa = Mesa.get_or_none(Mesa.id == pedido.mesa.id)
+        if mesa:
+            if pedido.status in [Pedido.Status.finalizado, Pedido.Status.cancelado]:
+                print(mesa, mesa.status)
+                mesa.status = True
+                mesa.save()
+             
+        pedido.save()
+        return redirect(url_for("dashboard.index", mesa=pedido.mesa.id, name="view_pedido"))
+    return "Pedido Não encontrado."
+
+@dashboard.get("/check_pedidos")
+def check_pedido():
+    class dados:
+        pedidos = Pedido.select().where(
+            (Pedido.empresa == current_user.empresa) &
+            (Pedido.status == Pedido.Status.pendente)
+        )
+        status = True if pedidos.count() > 0 else False        
+    
+    return stream_template("dh.produtos_list.html", dados=dados)
+
+@dashboard.before_request
+@login_required
+def check_out():
+    empresa:Empresa = Empresa.get_or_none(Empresa.id == current_user.empresa)
+    if not empresa:
+        return redirect(url_for("auth.login"))
 
 
 

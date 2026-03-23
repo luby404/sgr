@@ -47,7 +47,7 @@ def index(mesa_uuid:str):
         carrinho     = len([i for i in session.get("carrinho", {})])
         
         nome_restaurante = empresa.nome
-        mesa_id = mesa.uuid
+        mesa_id  = mesa.uuid
         
     # querys
     query_produtos = Produto.select().where(

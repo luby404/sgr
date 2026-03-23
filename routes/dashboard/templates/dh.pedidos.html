@@ -1,1 +1,49 @@
-<h1>Pedidos</h1>
+<div class="content_pedidos column">
+
+    <div class="row">
+        <div class="column">
+            <strong>Gestão de pedidos</strong>
+            <p>Gerencie seus pedidos em na velocidade da luz</p>
+        </div>
+
+        <div class="row2">
+            {% for status in dados.pedido_status[:-2] %}
+            {% if status == dados.status %}
+
+            <a href="?status={{ status }}" class="button">{{ status }}</a>
+            {% else %}
+            <a href="?status={{ status }}" class="button button2">{{ status }}</a>
+            {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="mesa_content" id="content_pedido"
+    hx-get="{{ url_for('dashboard.check_pedido' ) }}"
+    hx-trigger="every 3s"
+     hx-target="#content_pedido">
+
+        {% for pedido in dados.pedidos %}
+        <div class="mesa_card column" onclick="change_overlay()"
+            hx-get="{{ url_for('dashboard.index', mesa=pedido.mesa.id, name='view_pedido' ) }}" hx-target="#overlay">
+            <span class="num_mesa">{{ pedido.mesa.nome }}</span>
+
+            {% if not pedido.mesa.status %}
+            <img src="{{ url_for('static', filename='img/m_close.png') }}" alt="">
+            {% else %}
+            <img src="{{ url_for('static', filename='img/m_open.png') }}" alt="">
+            {% endif %}
+        </div>
+        {% endfor %}
+
+    </div>
+
+
+
+</div>
+
+
+

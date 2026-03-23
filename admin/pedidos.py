@@ -7,6 +7,14 @@ class PedidoAdmin(Model):
     roles       = ["empresa_gestor", "empresa_admin"]
     can_create = False
     
+    can_delete = True
+    
+    form_excluded_columns = [
+        "total", "aberto_em", "criaado_em", "atualizado_em", 
+        "empresa", "fechado_em", "mesa", "criado_em"
+    ]
+    
+    
     def on_model_change(self, form, model:Pedido, is_created):
         
         if not is_created:

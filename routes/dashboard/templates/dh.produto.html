@@ -5,15 +5,13 @@
     </div>
 
     <div class="row2">
-        <div class="button" 
-        onclick="change_overlay()" 
-        hx-get="{{ url_for('produtos.index', name='new' ) }}" 
-        hx-target="#overlay"
-        >
+        <div class="button" onclick="change_overlay()" hx-get="{{ url_for('produtos.index', name='new' ) }}"
+            hx-target="#overlay">
             <i class="ri-add-line"></i>
             <span>Novo Produto</span>
         </div>
-        <a href="" class="button">
+        <a href="" class="button" onclick="change_overlay()" hx-get="{{ url_for('produtos.index', name='categoria' ) }}"
+            hx-target="#overlay">
             <i class="ri-file-list-line"></i>
             <span>Categorias</span>
         </a>
@@ -33,15 +31,15 @@
         </thead>
         <tbody>
 
-            {% for produto in range(10) %}
+            {% for produto in dados.produtos %}
             <tr>
                 <td>
                     <div class="row2">
-                        <img class="table_image" src="{{ url_for('static', filename='img/produto.jpeg') }}" alt="">
-                        <span>Nome do produto</span>
+                        <img class="table_image" src="{{ url_for('static', filename='uploads/empresa_{}/{}'.format(dados.empresa_id, produto.capa)) }}" alt="">
+                        <span>{{ produto.nome }}</span>
                     </div>
                 </td>
-                <td>850,00</td>
+                <td>{{ produto.price }}</td>
                 <td>
                     <div class="status ative">
                         <span>Ativo</span>
@@ -52,7 +50,7 @@
                         <a href="" class="button">
                             <i class="ri-edit-line"></i>
                         </a>
-                        <a href="" class="button">
+                        <a hx-delete="{{ url_for('produtos.delete', id=produto.id, view=true ) }}" hx-confirm="Deseja eliminar o produto?" hx-target="#root" class="button">
                             <i class="ri-delete-bin-line"></i>
                         </a>
                     </div>

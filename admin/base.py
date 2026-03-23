@@ -2,6 +2,7 @@ from flask import redirect, url_for
 from flask_login import current_user
 from flask_admin.contrib.peewee import ModelView
 
+from flask_admin.menu import MenuLink, MenuDivider
 
 from models import Usuario
 
@@ -60,16 +61,37 @@ class Model(ModelView):
             
         return query
     
-        
-    
     def get_count_query(self):
 
         query = super().get_count_query()
-        query = query.where(
-            self.model.empresa == current_user.empresa
-        )
+        try:
+            query = query.where(
+                self.model.empresa == current_user.empresa
+            )
+        except: 
+            ...
 
         return query
     
+
+class Link(MenuLink):
     
+    roles = ["admin"]
+    user = None
     
+    def set_roles(self):
+        ...
+    
+    def is_accessible(self):
+                
+        view = False
+        self.user:Usuario = current_user
+        if self.user.is_authenticated and self.user.user_type in self.roles:
+            view = True
+            self.set_roles()
+        return view
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for("auth.login"))
+
+

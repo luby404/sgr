@@ -1,0 +1,97 @@
+<div class="content_pos">
+
+    <div class="view column">
+
+        <section class="categorias column">
+            <div class="content_categorias row2">
+                {% if dados.categoria_id %}
+                <a href="?categoria=all" class="">Todas</a>
+                {% else %}
+                <a href="?categoria=all" class="ative">Todas</a>
+                {% endif %}
+
+                {% for categoria in dados.categorias %}
+                {% if dados.categoria_id == categoria.id %}
+                <a href="?categoria={{ categoria.id }}" class="ative">{{ categoria.nome }}</a>
+                {% else %}
+
+                <a href="?categoria={{ categoria.id }}">{{ categoria.nome }}</a>
+                {% endif %}
+                {% endfor %}
+
+            </div>
+        </section>
+
+
+        <section class="grid_produtos_pos">
+
+            <div class="content_produtos">
+                {% for produto in dados.produtos %}
+
+                <div class="card_produto center" onclick="change_overlay()"
+                    hx-get="{{ url_for('cardapio.produto', id=produto.id, mesa=dados.mesa_id ) }}" hx-target="#overlay">
+                    <img src="{{ url_for('static', filename='uploads/produtos/{}'.format(produto.capa)) }}" alt="">
+                    <span>{{ produto.price}}</span>
+                    <strong>{{ produto.nome }}</strong>
+
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+    </div>
+
+    <div class="view column">
+
+        <div class="row2">
+            <strong>Número do pedido:</strong>
+            <strong>{{ 1 }}</strong>
+        </div>
+
+        <div class="lista_produtos">
+
+            <div class="table">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>produto</td>
+                            <td>qtd</td>
+                            <td>preço</td>
+                            <td>subtotal</td>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="row2">
+                <strong>Total:</strong>
+                <strong>{{ total }}</strong>
+            </div>
+
+        </div>
+        
+        <div class="row">
+            <label for="chk-btn"><span>Wowo</span></label>
+            <input type="checkbox" id="chk-btn">
+
+        </div>
+
+
+        <div class="grid_3">
+            <button class="button">
+                <i class="ri-check-line"></i>
+                <span>Finalizar</span>
+            </button>
+            <button class="button">
+                <i class="ri-close-line"></i>
+                <span>Cancelar</span>
+            </button>
+        </div>
+
+    </div>
+
+</div>

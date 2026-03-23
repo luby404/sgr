@@ -5,7 +5,7 @@
 
 .content_pedidos .mesa_content {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     gap: 10px;
 
     max-height: 100%;
@@ -24,6 +24,10 @@
     border-radius: 10px;
 }
 
+.mesa_card.True {
+    background-color: #02ca024f;
+}
+
 .mesa_card:hover {
     background-color: #d2d2d2;
 }
@@ -40,8 +44,8 @@
 
     font-size: .8rem;
     font-weight: bold;
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
 
     display: flex;

@@ -1,8 +1,8 @@
-from flask import Flask
 from flask_admin import Admin
+from flask import Flask, url_for
 
 from flask_admin.theme import Bootstrap4Theme
-
+from flask_admin.menu import MenuLink, MenuDivider
 from models import (
     Usuario,
     Empresa,
@@ -12,7 +12,7 @@ from models import (
     Produto, Categoria, Mesa, Pedido, ItenPedido
     
 )
-
+from admin.base import Link
 from admin.usuarios import UsuarioAdmin
 from admin.empresa import EmpresaAdmin
 from admin.assinatura import AssinaturaAdmin
@@ -56,6 +56,19 @@ admin.add_views(
     
 
 )
+auth_link = Link(name="Sair", url="/auth/logout")
+auth_link.roles = ["admin", "empresa_admin", "empresa_gestor"]
+
+dashboard_link = Link(name="Dashboard", url="/dashboard/home")
+dashboard_link.roles = ["empresa_admin", "empresa_gestor"]
+
+
+admin.add_links(
+    dashboard_link,
+    auth_link,
+)
+
 
 def init_admin(app: Flask):
     admin.init_app(app)
+    

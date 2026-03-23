@@ -1,0 +1,19 @@
+
+{% for pedido in dados.pedidos %}
+<div class="mesa_card column" onclick="change_overlay()"
+    hx-get="{{ url_for('dashboard.index', mesa=pedido.mesa.id, name='view_pedido' ) }}" hx-target="#overlay">
+    <span class="num_mesa">{{ pedido.mesa.nome }}</span>
+
+    {% if not pedido.mesa.status %}
+    <img src="{{ url_for('static', filename='img/m_close.png') }}" alt="">
+    {% else %}
+    <img src="{{ url_for('static', filename='img/m_open.png') }}" alt="">
+    {% endif %}
+</div>
+{% endfor %}
+<audio src="{{ url_for('static', filename='bnb.wav') }}" id="audio_tag"></audio>
+
+
+<script>
+    var audio_url = "{{ url_for('static', filename='bnb.wav') }}"
+</script>

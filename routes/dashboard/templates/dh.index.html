@@ -3,6 +3,9 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pedidos.mesa.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cardapio.index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pos.css') }}">
 <title>Dashboard</title>
 {% endblock %}
 
@@ -17,32 +20,29 @@
                 <i class="ri-line-chart-line"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="{{ url_for('dashboard.index', name='produto' ) }}" class="iten_menu">
-                <i class="ri-box-3-line"></i>
-                <span>Produtos</span>
-            </a>
             <a href="{{ url_for('dashboard.index', name='pedidos' ) }}" class="iten_menu">
-                <i class="ri-file-list-line"></i>
+                <i class="ri-restaurant-2-line"></i>
                 <span>Pedidos</span>
             </a>
-            <a href="{{ url_for('dashboard.index', name='usuarios' ) }}" class="iten_menu">
-                <i class="ri-group-line"></i>
-                <span>Usuarios</span>
+            <a href="{{ url_for('dashboard.index', name='pos' ) }}" class="iten_menu">
+                <i class="ri-line-chart-line"></i>
+                <span>POS</span>
             </a>
-            <a href="{{ url_for('dashboard.index', name='config' ) }}" class="iten_menu">
-                <i class="ri-settings-3-line"></i>
-                <span>Configurações</span>
+            <a href="{{ url_for('auth.logout') }}" class="iten_menu">
+                <i class="ri-logout-box-r-line"></i>
+                <span>Terminar Sessão</span>
             </a>
 
         </div>
     </section>
 
 
-    <section class="content_dashboard column">
+    <section class="content_dashboard column" id="root">
         {{ dados.view | safe }}
     </section>
 
 </div>
+
 
 
 {% endblock %}

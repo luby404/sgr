@@ -1,0 +1,85 @@
+<div class="content_carrinho column">
+
+    <div class="car_btn_close" onclick="change_overlay()">
+        <i class="ri-close-line"></i>
+    </div>
+
+    <div class="column center">
+        <strong>Detalhes do pedido</strong>
+
+    </div>
+
+    <div class="lista_produtos">
+
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Produto</td>
+                        <td>Qtd</td>
+                        <td>Preço</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for produto in dados.produtos_pedido %}
+                    <tr>
+                        <td>{{ produto.produto_nome }}</td>
+                        <td>x{{ produto.quantidate }}</td>
+                        <td>{{ produto.price }}</td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+
+
+    </div>
+
+    <div class="row">
+
+
+
+    </div>
+    <div class="column">
+        <div class="row">
+            <span>Mesa:</span>
+            <strong>{{ dados.pedido_mesa.mesa.nome }}</strong>
+        </div>
+        <div class="row">
+            <span>Pedido</span>
+            <strong>{{ dados.pedido_mesa.id }}</strong>
+        </div>
+        <div class="row">
+            <span>Total:</span>
+            <strong>{{ dados.pedido_total }}</strong>
+        </div>  
+
+    </div>
+    <hr>
+    <div class="grid_3">
+        <a href="{{ url_for('payment.recibo', type=1, id=dados.pedido_mesa.id ) }}" target="_blank" class="button" id="" >
+            <span>imprimir</span>
+            <i class="ri-printer-line"></i>
+        </a>
+        <form action="" class="form" hx-confirm="Deseja atualizar o status do pedido ?" hx-trigger="change" hx-post="{{ url_for('dashboard.update_pedido', id=dados.pedido_mesa.id ) }}" hx-target="#overlay">
+            <div class="entry">
+                <select name="status_update" id="" class="input">
+                    {% for status in dados.pedido_status %}
+                        {% if dados.pedido_mesa.status == status %}
+                        <option value="{{ status }}" selected>{{ status }}</option>
+                            
+                        {% else %}
+                            <option value="{{ status }}">{{ status }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+          
+
+    </div>
+
+</div>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/print.css') }}">
+    <title>recibo</title>
+
+    <style>
+        @media print {
+            table thead td {
+                color: #000;
+                font-weight: bold;
+            }
+            table tr:nth-child(even){
+                border-bottom: 1px solid #d4d4d4;
+            }
+        }
+    </style>
+</head>
+
+<body class="app">
+
+    <div class="print_content column">
+
+        <header class="column">
+            {% if dados.pagamento %}
+            <h3>{{ dados.nome }}</h3>
+            <strong>{{ dados.telefone }}</strong>
+                <strong>Recibbo de pagamento</strong>
+                
+            {% else %}
+                
+                <strong>Recibbo para Cozinha</strong>
+            {% endif %}
+        </header>
+        <div class="row">
+            <strong>Data e hora:</strong>
+            <span>{{ dados.data }}</span>
+        </div>
+
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Produto</td>
+                        <td>Qtd</td>
+                        <td>Preço</td>
+                        <td>Subtotal</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for produto in dados.produtos %}
+                    
+                        <tr>
+                            <td>{{ produto.produto_nome }}</td>
+                            <td>{{ produto.quantidate }}</td>
+                            <td>{{ produto.produto_price }}</td>
+                            <td>{{ produto.subtotal }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div class="row">
+            <strong>Mesa:</strong>
+            <span>{{ dados.mesa }}</span>
+        </div>
+        <div class="row">
+            <strong>Pedido:</strong>
+            <span>{{ dados.num_pedido }}</span>
+        </div>
+        <div class="row">
+            <strong>Total:</strong>
+            <span>{{ dados.total }}</span>
+        </div>
+
+        <div class="column">
+            <p>Este Recibo não serve como fatura</p>
+        </div>
+
+
+    </div>
+
+
+    
+</body>
+
+</html>
