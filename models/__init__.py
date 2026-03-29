@@ -6,10 +6,8 @@ from .models import (
     Mesa,
     Pedido,
     ItenPedido,
-    Pagamento,
-    Assinatura,
-    Plano,
     Categoria,
+    Estoque,
     generate_password_hash
     
 )
@@ -24,10 +22,8 @@ def init_db():
         Mesa,
         Pedido,
         ItenPedido,
-        Pagamento,
-        Assinatura,
-        Plano,
-        Categoria
+        Categoria,
+        Estoque
     ])
     try: 
         Usuario.create(

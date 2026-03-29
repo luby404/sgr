@@ -28,13 +28,18 @@ def index(name=None):
     if not name:
         name = "home"
     
-    empresa:Empresa = Empresa.get_or_none(Empresa.id == current_user.empresa)
     
     categoria:Categoria = Categoria.get_or_none(Categoria.id == request.args.get("categoria", None))
     
     status_pedido:Pedido.Status = Pedido.Status
-    
     class Dados:
+        
+        # carrinho
+        carrinho = session.get("carrinho", {})
+        total = converte_moeda(sum([
+            float(produto["price"]) * float(produto["qtd"]) 
+            for id, produto in carrinho.items()
+        ]))
         
         user_name = current_user.nome
         
@@ -52,13 +57,11 @@ def index(name=None):
         pedido_mesa = Pedido
         status = request.args.get("status", status_pedido.pendente)
         
-        carrinho = session.get("carrinho", {})
         
         produtos = []
         
         categorias = []
         pedidos    = [p for p in Pedido.select().where(
-           ( Pedido.empresa == empresa) &
             (Pedido.status == status)
         )]
         
@@ -82,7 +85,6 @@ def index(name=None):
             
             
             query_pedidos = Pedido.select().where(
-                (Pedido.empresa == empresa) &
                 (Pedido.criado_em <= data_hoje)
             )
             query_finalizados = query_pedidos.where(Pedido.status == status_pedido.finalizado)
@@ -112,7 +114,6 @@ def index(name=None):
         if name == "pos":
             
             query_produtos = Produto.select().where(
-                Produto.empresa == empresa & 
                 Produto.cardapio
             )
             # filtrar por categoria
@@ -126,7 +127,7 @@ def index(name=None):
                 Dados.produtos.append(produto)
                 
                 
-            Dados.categorias = Categoria.select().where(Categoria.empresa == empresa)
+            Dados.categorias = Categoria.select()
             
         
         Dados.view =  render_template(pages[name], dados=Dados)
@@ -161,7 +162,6 @@ def update_pedido(id):
 def check_pedido():
     class dados:
         pedidos = Pedido.select().where(
-            (Pedido.empresa == current_user.empresa) &
             (Pedido.status == Pedido.Status.pendente)
         )
         status = True if pedidos.count() > 0 else False        
@@ -171,9 +171,7 @@ def check_pedido():
 @dashboard.before_request
 @login_required
 def check_out():
-    empresa:Empresa = Empresa.get_or_none(Empresa.id == current_user.empresa)
-    if not empresa:
-        return redirect(url_for("auth.login"))
+    pass
 
 
 

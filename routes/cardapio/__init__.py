@@ -8,7 +8,7 @@ from flask import (
     render_template
 )
 
-from models import Empresa, Mesa, Produto, Categoria, Pedido, ItenPedido
+from models import Mesa, Produto, Categoria, Pedido, ItenPedido
 
 from utils import converte_moeda
 
@@ -24,11 +24,9 @@ cardapio = Blueprint(
 def index(mesa_uuid:str):
     
     mesa:Mesa       = Mesa.get_or_none(Mesa.uuid == mesa_uuid)
-    empresa:Empresa = Empresa.get_or_none(Empresa.id == mesa.empresa.id)
-    
     categoria:Categoria = Categoria.get_or_none(Categoria.id == request.args.get("categoria", None))
     
-    if not mesa or not empresa:
+    if not mesa:
         return "mesa não existe"
     
     
@@ -46,16 +44,12 @@ def index(mesa_uuid:str):
         categoria_id = categoria.id if categoria else False
         carrinho     = len([i for i in session.get("carrinho", {})])
         
-        nome_restaurante = empresa.nome
+        nome_restaurante = "Nome"
         mesa_id  = mesa.uuid
         
     # querys
-    query_produtos = Produto.select().where(
-        Produto.empresa == empresa
-    )
-    query_categoria = Categoria.select().where(
-        Categoria.empresa == empresa
-    )
+    query_produtos = Produto.select()
+    query_categoria = Categoria.select()
     
     # filtrar por categoria
     if categoria:
@@ -92,12 +86,11 @@ def produto():
 def carrinho():
     
     mesa:Mesa       = Mesa.get_or_none(Mesa.uuid == request.args.get("mesa"))
-    empresa:Empresa = Empresa.get_or_none(Empresa.id == mesa.empresa.id)
     carrinho        = session.get("carrinho", {})
     total = 0
     
-    if not mesa or not empresa:
-        return f"Empresa ou mesa não existe! {mesa} {empresa}"
+    if not mesa:
+        return f"Empresa ou mesa não existe! {mesa}"
     
     if request.method == "POST":
         produto:Produto = Produto.get_or_none(Produto.id == request.form.get("produto"))
@@ -142,13 +135,11 @@ def carrinho_delete(mesa, id):
 def new_pedido(mesa):
     
     mesa:Mesa       = Mesa.get_or_none(Mesa.uuid == mesa)
-    if mesa:
-        empresa:Empresa = Empresa.get_or_none(Empresa.id == mesa.empresa.id)
+    
     
     carrinho  = session.get("carrinho", {})
-    if mesa and empresa:
+    if mesa:
         pedido:Pedido = Pedido.create(
-            empresa=empresa,
             mesa=mesa,
         )
         total = 0
@@ -156,7 +147,6 @@ def new_pedido(mesa):
             pd:Produto = Produto.get_or_none(Produto.id == produto["id"])
             if pd:
                 ItenPedido.create(
-                    empresa=empresa,
                     pedido=pedido,
                     produto=pd,
                     produto_nome=pd.nome,
@@ -205,4 +195,61 @@ def pedido(id):
     
     return "O pedido não existe ou já foi finalizado"
 
+
+
+
+@cardapio.get("/pos")
+def pos():
+    produto_:Produto = Produto.get_or_none(Produto.id == request.args.get("id", False))
+    
+    if not produto_:
+        return "Não encontrado."
+    
+    produto_.price = converte_moeda(produto_.price)
+    
+    
+    return render_template("cardapio.produto.html", produto=produto_)
+
+@cardapio.route("/carrinho_pos", methods=["POST", "GET", "DELETE"])
+def carrinho_pos():
+    
+    carrinho        = session.get("carrinho", {})
+    total = 0
+    
+    if request.method == "POST":
+        produto:Produto = Produto.get_or_none(Produto.id == request.form.get("produto"))
+        try: qtd:int = int(request.form.get("qtd", 1))
+        except: qtd = 1
+        
+        if produto:
+            
+            carrinho = session.get("carrinho", {})
+            if str(produto.id) in carrinho:
+                carrinho[str(produto.id)]["qtd"] += qtd
+            else:
+                carrinho[str(produto.id)] = {
+                    "qtd": qtd,
+                    "nome": produto.nome,
+                    "capa": produto.capa,
+                    "id": produto.id,
+                    "price": produto.price,
+                    "diaplay_price": converte_moeda(produto.price),
+                    "subtotal":      converte_moeda((produto.price * qtd))
+                }
+            
+            session["carrinho"] = carrinho
+            
+        return redirect(url_for("dashboard.index", name="pos"))
+    
+    
+    return render_template("cardapio.carrinho.html", carrinho=carrinho, total=total)
+
+@cardapio.get("/carrinho_pos/delete/<id>")
+def carrinho_delete_pos(id):
+    
+    carrinho        = session.get("carrinho", {})
+    del carrinho[str(id)]
+    session["carrinho"] = carrinho
+    
+    return redirect(url_for("dashboard.index", name="pos"))
 

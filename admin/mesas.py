@@ -7,7 +7,7 @@ current_user:Usuario
 
 class MesaAdmin(Model):
     column_list = ["nome", "status", "criado_em", "uuid", "link"]
-    roles       = ["empresa_gestor", "empresa_admin"]
+    roles       = ["gestor", "admin"]
     
     column_editable_list = ["nome", "status"]
     
@@ -15,17 +15,9 @@ class MesaAdmin(Model):
     
     
     def set_roles(self):
-        if current_user.user_type == "empresa_gestor":
+        if current_user.user_type == "gestor":
             self.can_delete = False
         
         return super().set_roles()
     
-    def on_model_change(self, form, model:Categoria, is_created):
-        
-        if is_created:
-            model.empresa = current_user.empresa
-        
-        return super().on_model_change(form, model, is_created)
     
-
-

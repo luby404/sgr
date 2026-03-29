@@ -4,8 +4,9 @@ from models  import Mesa, Pedido
 
 class PedidoAdmin(Model):
     column_list = ["mesa", "aberto_em", "fechado_em", "total", "status"]
-    roles       = ["empresa_gestor", "empresa_admin"]
+    roles       = ["gestor", "admin"]
     can_create = False
+    can_export = True
     
     can_delete = True
     

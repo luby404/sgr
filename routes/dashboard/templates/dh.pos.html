@@ -29,7 +29,7 @@
                 {% for produto in dados.produtos %}
 
                 <div class="card_produto center" onclick="change_overlay()"
-                    hx-get="{{ url_for('cardapio.produto', id=produto.id, mesa=dados.mesa_id ) }}" hx-target="#overlay">
+                    hx-get="{{ url_for('cardapio.pos', id=produto.id ) }}" hx-target="#overlay">
                     <img src="{{ url_for('static', filename='uploads/produtos/{}'.format(produto.capa)) }}" alt="">
                     <span>{{ produto.price}}</span>
                     <strong>{{ produto.nome }}</strong>
@@ -43,10 +43,7 @@
 
     <div class="view column">
 
-        <div class="row2">
-            <strong>Número do pedido:</strong>
-            <strong>{{ 1 }}</strong>
-        </div>
+        <strong>Lista de produtos</strong>
 
         <div class="lista_produtos">
 
@@ -58,28 +55,38 @@
                             <td>qtd</td>
                             <td>preço</td>
                             <td>subtotal</td>
+                            <td></td>
                         </tr>
                     </thead>
+                    <tbody>
+                        {% for id, produto in dados.carrinho.items() %}
+                        <tr>
+                            <td>{{ produto["nome"] }}</td>
+                            <td>{{ produto["qtd"] }}</td>
+                            <td>{{ produto["diaplay_price"] }}</td>
+                            <td>{{ produto["subtotal"] }}</td>
+                            <td>
+                                <a href="{{ url_for('cardapio.carrinho_delete_pos', id=id ) }}" id="link_c"
+                                    class="button">
+                                    <i class="ri-delete-bin-2-line"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
 
+
             </div>
 
         </div>
 
-        <div class="row">
-            <div class="row2">
+        <div class="column">
+            <div class="row">
                 <strong>Total:</strong>
-                <strong>{{ total }}</strong>
+                <strong>{{ dados.total }}</strong>
             </div>
-
         </div>
-        
-        <div class="row">
-            <label for="chk-btn"><span>Wowo</span></label>
-            <input type="checkbox" id="chk-btn">
-
-        </div>
-
 
         <div class="grid_3">
             <button class="button">
@@ -95,3 +102,14 @@
     </div>
 
 </div>
+
+<script>
+    document.querySelector("#link_c").addEventListener("click", function (e) {
+        const cfn = confirm("Tem a certeza que deseja elimiar?")
+        if (!cfn) {
+            e.preventDefault()
+        }
+
+    })
+
+</script>

@@ -1,7 +1,63 @@
+{% if messa %}
 <form class="content_produto_modal column" action="{{ url_for('cardapio.carrinho', mesa=mesa.uuid ) }}" method="post">
 
     <div class="row">
         <span>Adicionar no carrinho</span>
+        <div class=" button" onclick="change_overlay()">
+            <i class="ri-close-line"></i>
+        </div>
+    </div>
+
+    <div class="infos column center">
+        <img class="produto_modal_img"
+            src="{{ url_for('static', filename='uploads/produtos/{}'.format(produto.capa)) }}" alt="">
+        <strong class="center">{{ produto.nome }}</strong>
+        <p style="text-align: center; font-size: .8rem; opacity: .7;">
+            {{ produto.descricao }}
+        </p>
+
+    </div>
+    <div class="qtd center">
+        <div class="btn" onclick="sub()">
+            <i class="ri-subtract-fill"></i>
+        </div>
+        <input type="hidden" name="produto" value="{{ produto.id }}">
+        <input type="number" name="qtd" value="1" id="value">
+        <div class="btn" onclick="add()">
+            <i class="ri-add-fill"></i>
+        </div>
+    </div>
+
+    <div class="row">
+        <strong>{{ produto.price }}</strong>
+        <button class="button">
+            <span>Adicionar</span>
+            <i class="ri-shopping-cart-line"></i>
+        </button>
+    </div>
+
+</form>
+
+<script>
+
+    var input = document.querySelector("input#value")
+
+    function add() {
+        input.value = parseInt(input.value) + 1
+    }
+    function sub() {
+        input.value = parseInt(input.value) - 1
+        if (input.value < 0) input.value = 0
+    }
+
+</script>
+{% else %}
+
+
+<form class="content_produto_modal column" action="{{ url_for('cardapio.carrinho_pos' ) }}" method="post">
+
+    <div class="row">
+        <span>Adicionar no carrinho pos</span>
         <div class=" button" onclick="change_overlay()">
             <i class="ri-close-line"></i>
         </div>
@@ -51,3 +107,4 @@
     }
 
 </script>
+{% endif %}

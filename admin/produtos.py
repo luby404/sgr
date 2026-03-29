@@ -15,8 +15,8 @@ current_user:Usuario
 
 class ProdutosAdmin(Model):
     form_excluded_columns = ["capa",  "estoque", "criado_em", "atualizado_em", "is_ative", "empresa", "cardapio"]
-    column_list           = ["capa", "nome", "categoria", "price", "cardapio"]
-    roles                 = ["empresa_gestor", "empresa_admin"]
+    column_list           = ["capa", "nome", "categoria", "price", "cardapio", "estoque"]
+    roles                 = ["gestor", "admin"]
     column_default_sort = ("categoria", True)
     column_editable_list = ["cardapio", "categoria", "price", "nome"]
     
@@ -49,14 +49,4 @@ class ProdutosAdmin(Model):
     column_formatters = {
         "capa": _imagem
     }
-    
-    
-    def on_model_change(self, form, model:Produto, is_created:bool):
-        
-        if is_created: 
-            model.empresa = current_user.empresa
-        
-        return super().on_model_change(form, model, is_created)
-    
-    
-    
+   

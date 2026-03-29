@@ -27,10 +27,10 @@ def login():
             if user.check_password(senha):
                 login_user(user)
                 next_page = request.args.get("next")
-                if user.user_type in [user.roles.empresa, user.roles.gestor]:
+                if user.user_type in [user.roles.gestor]:
                     return redirect(next_page or url_for("admin.index"))
                 else:
-                    return redirect(next_page or url_for("dashboard.index", name="home"))
+                    return redirect(url_for("dashboard.index", name="home"))
             else:
                flash("Usuario ou senha Incorretos!") 
         else:

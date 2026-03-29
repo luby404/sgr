@@ -29,9 +29,14 @@ class UsuarioAdmin(Model):
     def on_model_change(self, form, model:Usuario, is_created):
         
         if is_created:
-            model.empresa = current_user.empresa
             model.set_password(model.senha)
         
         return super().on_model_change(form, model, is_created)
+
+    def get_query(self):
+        query = self.model.select().where(
+            Usuario.id != current_user.id
+        )
+        return query
 
     
