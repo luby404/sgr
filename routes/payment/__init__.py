@@ -4,7 +4,11 @@ from flask import *
 from utils import converte_moeda
 from flask_login import login_required, current_user
 
-from models import Pedido, Usuario, Empresa
+from models import Pedido, Usuario, Empresa, Produto, ItenPedido
+
+from print_esp import Print
+
+
 
 payment = Blueprint(
     "payment",
@@ -13,6 +17,7 @@ payment = Blueprint(
     template_folder=os.path.join(os.path.dirname(__file__), "templates")
 )
 
+prt = Print()
 
 @payment.get("/recibo/<id>")
 def recibo(id):
@@ -26,25 +31,47 @@ def recibo(id):
             num_pedido = pedido.id
             total = 0
             data = pedido.fechado_em.strftime("%d-%m-%Y %H:%M")
-            telefone = pedido.empresa.telefone
-            nome = pedido.empresa.nome
+            telefone = "931617941"
+            nome = "Cramer"
             
             pagamento = True if str(tipo) == "1" else False
             
             
             for produto in pedido.produtos.select():
+                produto:ItenPedido = produto
+                
                 total += float(produto.subtotal)
                 
-                produto.produto_price = converte_moeda(produto.produto_price)
-                produto.subtotal = converte_moeda(produto.subtotal)
+                #produto.produto_price = converte_moeda(produto.produto_price)
+                #produto.subtotal     = converte_moeda(produto.subtotal)
                 
-                produtos.append(produto)
+                # ("cocacola", 2, 100)
+                produtos.append(
+                    [
+                        produto.produto_nome,
+                        produto.quantidate,
+                        produto.produto_price,
+                    ]
+                )
+                
             
-        return render_template("print.html", dados=dados)
+            # imprimir recibo
+            prt.print_recibo_pedido(produtos, total=converte_moeda(total), mesa=mesa, pedido=pedido)
+        return "recibo imprimido com sucesso!"
+            
+        #return render_template("print.html", dados=dados)
+
+
+@payment.get("/recibo/mesa/<id>")
+def recibo_mesa(id):
+    
+    url = request.url_root + url_for("cardapio.reck_mesa", id=id)
+    prt.print_recibo_qr_mesa(url, "1")
+    
+    
+    return redirect("/admin/mesa/")
 
 @payment.before_request
 @login_required
 def check_out():
-    empresa:Empresa = Empresa.get_or_none(Empresa.id == current_user.empresa)
-    if not empresa:
-        return redirect(url_for("auth.login"))
+    pass

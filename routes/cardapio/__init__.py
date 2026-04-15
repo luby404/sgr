@@ -19,6 +19,14 @@ cardapio = Blueprint(
     template_folder=os.path.join(os.path.dirname(__file__), "templates")
 )
 
+@cardapio.get("/check_mesa/<id>")
+def reck_mesa(id):
+    
+    mesa:Mesa = Mesa.get_or_none(Mesa.id == id)
+    if mesa:
+        return redirect(url_for("cardapio.index", mesa_uuid=mesa.uuid))
+    
+    return "MEsa Não existe"
 
 @cardapio.get("/<mesa_uuid>")
 def index(mesa_uuid:str):
