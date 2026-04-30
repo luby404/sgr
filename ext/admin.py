@@ -57,7 +57,7 @@ admin.add_views(
 
 
 admin.add_links(
-    Link(name="Dashboard", url="/dashboard/home"),
+    Link(name="Dashboard", url="/home"),
     Link(name="Sair", url="/auth/logout"),
 )
 

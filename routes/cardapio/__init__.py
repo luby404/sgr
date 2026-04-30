@@ -169,7 +169,7 @@ def new_pedido(mesa):
         mesa.status = False
         mesa.save()
         pedido.save()
-        return redirect(url_for("cardapio.index", id=pedido.id))
+        return redirect(url_for("cardapio.index", mesa_uuid=pedido.mesa.uuid))
     
     
     return "Requisição invalida, escanea o codigo novamente"
@@ -205,9 +205,6 @@ def pedido(id):
     
     return "O pedido não existe ou já foi finalizado"
 
-
-
-
 @cardapio.get("/pos_vss")
 def pos():
     produto_:Produto = Produto.get_or_none(Produto.id == request.args.get("id", False))
@@ -219,7 +216,6 @@ def pos():
     
     
     return render_template("cardapio.produto.html", produto=produto_)
-
 
 @cardapio.route("/carrinho_pos", methods=["POST", "GET", "DELETE"])
 def carrinhopos():
