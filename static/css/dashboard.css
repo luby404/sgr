@@ -17,6 +17,9 @@
 .content_menu .menu {
     position: relative;
     z-index: 1;
+    background-color: var(--secundaria);
+    padding: 10px;
+    border-radius: 10px;
 }
 
 
@@ -25,16 +28,18 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--text);
+    color: var(--text2);
     border-radius: 10px;
     cursor: pointer;
 
     text-decoration: none;
     z-index: 1;
+    
+
 }
 .menu .iten_menu.ative, .menu .iten_menu:hover {
-    background-color: var(--secundaria);
-    color: var(--text2);
+    background-color: var(--fundo);
+    color: var(--text);
 }
 
 .menu .iten_menu  i {
@@ -45,23 +50,25 @@
     font-size: .8rem;
     border-radius: 10px;
     font-weight: bold;
-
+    
     display: none;
     position: absolute;
-    left: 60px;
+    left: 68px;
     background-color: var(--secundaria);
     padding: 10px;
     text-wrap: nowrap;
+
 }
 
 .menu .iten_menu:hover > span {
     display: flex;
+    color: var(--text2);
 }
 
 .menu .iten_menu:last-child {
     position: absolute;
     bottom: 10px;
-    width: 100%;
+    width: calc(100% - 20px);
     z-index: 1;
 }
 
@@ -80,6 +87,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--text);
 }
 .gri_cards {
     display: grid;
@@ -98,6 +106,7 @@
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 0 10px -2px #00000050;
+    color: var(--text);
 
 }
 

@@ -91,6 +91,8 @@ class Pedido(Model):
     status     = orm.CharField(default=Status.pendente, choices=[
         (i, i) for i in [Status.pendente, Status.preparacao, Status.entregue, Status.finalizado, Status.cancelado]
     ])
+    
+    #usuario = orm.ForeignKeyField(Usuario, backref="pedidos", null=True)
 
 class ItenPedido(Model):
     

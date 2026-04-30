@@ -22,6 +22,10 @@ prt = Print()
 @payment.get("/recibo/<id>")
 def recibo(id):
     tipo = request.args.get("type", None)
+    msg = dict(
+        msg="Pedido impresso com sucesso!",
+        status=False
+    )
     
     pedido:Pedido = Pedido.get_or_none(Pedido.id == id)
     if pedido:
@@ -56,8 +60,14 @@ def recibo(id):
                 
             
             # imprimir recibo
-            prt.print_recibo_pedido(produtos, total=converte_moeda(total), mesa=mesa, pedido=pedido)
-        return "recibo imprimido com sucesso!"
+            try:
+                prt.print_recibo_pedido(produtos, total=converte_moeda(total), mesa=mesa, pedido=pedido)
+                msg["status"] = True
+            except:
+                msg["msg"] = "Não foi possivel imprimir o recibo"
+            
+            
+        return msg
             
         #return render_template("print.html", dados=dados)
 

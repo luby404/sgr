@@ -1,0 +1,99 @@
+{% extends 'admin/master.html' %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/remix/remixicon.css') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.index.css') }}">
+{% endblock %}
+
+{% block body %}
+
+
+<div class="column">
+
+    <div class="row_">
+        <h3>Relatorios</h3>
+        <div class="row2">
+            <form class="row2" action="" method="get">
+                
+                <div class="entry">
+                    <input class="input" type="date" name="inicio" >
+                </div>
+                <div class="entry">
+                    <input class="input" type="date" name="fim" >
+                </div>
+                <button class="button">
+                    <i class="ri-filter-line"></i>
+                    <span>Filtrar</span>
+                </button>
+                <a href="?export=1&tipo={{ 1 }}&inicio={{ 1 }}&fim={{ 1 }}" class="button">
+                    <i class="ri-csv-line"></i>
+                    <span>Exportar</span>
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <div class="content_view_cards">
+
+
+        <div class="cards">
+            <i class="ri-box-3-line"></i>
+            <div class="infos column">
+                <span>Produtos vendidos</span>
+                <strong>{{ dados.resumo.produtos }}</strong>
+            </div>
+        </div>
+        <div class="cards">
+            <i class="ri-box-3-line"></i>
+            <div class="infos column">
+                <span>Total de Pedidos</span>
+                <strong>{{ dados.resumo.pedidos }}</strong>
+            </div>
+        </div>
+
+        <div class="cards">
+            <i class="ri-pie-chart-line"></i>
+            <div class="infos column">
+                <span>Media de vendas</span>
+                <strong>{{ dados.resumo.media }}</strong>
+            </div>
+        </div>
+        <div class="cards">
+            <i class="ri-line-chart-line"></i>
+            <div class="infos column">
+                <span>Total de vendas</span>
+                <strong>{{ dados.resumo.vendas }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <td>Número do pedido</td>
+                    <td>total de Produtos</td>
+                    <td>Total</td>
+                    <td>Data/hora</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in dados.lista_pedidos %}
+                <tr>
+                    <td>{{ pedido.numero }}</td>
+                    <td>{{ pedido.produtos }}</td>
+                    <td>{{ pedido.total }}</td>
+                    <td>{{ pedido.data }}</td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

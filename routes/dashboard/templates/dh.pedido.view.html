@@ -55,31 +55,43 @@
         <div class="row">
             <span>Total:</span>
             <strong>{{ dados.pedido_total }}</strong>
-        </div>  
+        </div>
 
     </div>
     <hr>
     <div class="grid_3">
-        <a href="{{ url_for('payment.recibo', type=1, id=dados.pedido_mesa.id ) }}" target="_blank" class="button" id="" >
+        <a id class="button" onclick="print_recibo()">
             <span>imprimir</span>
             <i class="ri-printer-line"></i>
         </a>
-        <form action="" class="form" hx-confirm="Deseja atualizar o status do pedido ?" hx-trigger="change" hx-post="{{ url_for('dashboard.update_pedido', id=dados.pedido_mesa.id ) }}" hx-target="#overlay">
+        <form action="" class="form" hx-confirm="Deseja atualizar o status do pedido ?" hx-trigger="change"
+            hx-post="{{ url_for('dashboard.update_pedido', id=dados.pedido_mesa.id ) }}" hx-target="#overlay">
             <div class="entry">
                 <select name="status_update" id="" class="input">
                     {% for status in dados.pedido_status %}
-                        {% if dados.pedido_mesa.status == status %}
-                        <option value="{{ status }}" selected>{{ status }}</option>
-                            
-                        {% else %}
-                            <option value="{{ status }}">{{ status }}</option>
-                        {% endif %}
+                    {% if dados.pedido_mesa.status == status %}
+                    <option value="{{ status }}" selected>{{ status }}</option>
+
+                    {% else %}
+                    <option value="{{ status }}">{{ status }}</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
             </div>
         </form>
-          
+
 
     </div>
 
 </div>
+
+<script>
+    
+    function print_recibo() {
+        const url = "{{ url_for('payment.recibo', type=1, id=dados.pedido_mesa.id ) }}"
+        fetch(url).then(data => { return data.json() }).then(msg => {
+            alert(msg.msg)
+
+        })
+    }
+</script>

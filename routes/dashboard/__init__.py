@@ -10,7 +10,7 @@ from flask_login import current_user, login_required
 
 from utils import converte_moeda
 
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date, time
 
 current_user:Usuario
 
@@ -18,7 +18,7 @@ current_user:Usuario
 dashboard = Blueprint(
     "dashboard",
     __name__,
-    url_prefix="/dashboard",
+    url_prefix="/",
     template_folder=os.path.join(os.path.dirname(__file__), "templates")
 )
 
@@ -81,11 +81,15 @@ def index(name=None):
         
         if name == "home":
             # cacular dados de resumo
-            data_hoje = datetime.now()
+            data_hoje = datetime.now().date()
+            start_data = datetime.combine(data_hoje, time.min)
+            and_data   = datetime.combine(data_hoje, time.max)
             
             
             query_pedidos = Pedido.select().where(
-                (Pedido.criado_em <= data_hoje)
+                (Pedido.criado_em >= start_data) &
+                (Pedido.criado_em <= and_data)
+                #(Pedido.) # buscar por usuario
             )
             query_finalizados = query_pedidos.where(Pedido.status == status_pedido.finalizado)
             

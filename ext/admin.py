@@ -16,6 +16,7 @@ from admin.categorias import CategoriaAdmin
 from admin.mesas import MesaAdmin
 from admin.pedidos import PedidoAdmin
 from admin.estoque import EstoqueAdmin
+from admin.relatorio import RelatoriosAdmin
 
 # empresa
 from admin.produtos import ProdutosAdmin
@@ -26,7 +27,7 @@ admin = Admin(
     name="Painel Adminstrativo",
     theme=Bootstrap4Theme(
         swatch="journal", 
-        fluid=True,
+        #fluid=True,
     )
 )
 
@@ -44,7 +45,12 @@ admin.add_views(
     #
     MesaAdmin(Mesa, category=categoria_admin.operacao),
     PedidoAdmin(Pedido, category=categoria_admin.operacao),
-    EstoqueAdmin(Estoque, category=categoria_admin.operacao)
+    EstoqueAdmin(Estoque, category=categoria_admin.operacao),
+    
+    RelatoriosAdmin(
+        name="Relátorios",
+        category=categoria_admin.operacao
+    )
 
 )
 

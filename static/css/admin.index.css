@@ -1,0 +1,40 @@
+.content {
+    padding: 0;
+}
+
+.options {
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content_view_cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+
+    padding: .3rem;
+}
+.content_view_cards .cards {
+
+    box-shadow: 0 0 10px -2px #555755d2;
+
+    padding: 10px;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    text-align: end;
+    min-height: 100px;
+}
+
+.content_view_cards .cards i {
+    font-size: 1.4rem;
+}
+
+.content_view_cards .cards span {
+    font-size: .8rem;
+    opacity: 1rem;
+}

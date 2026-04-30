@@ -33,7 +33,7 @@ class Print():
             
             .add_component(
                 POSQRCodeBuilder(str(url))
-                .set_size(10)
+                .set_size(6)
                 .set_error_correction(POSQRCodeErrorCorrection.HIGH)
                 .build()
             )

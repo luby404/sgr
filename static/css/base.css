@@ -10,9 +10,9 @@
 :root {
     --primaria:   #ffffff;
     --secundaria: #c91717;
-    --fundo:      #ffffff;
+    --fundo:      #ffffffee;
     --gelo:       #d2d2d2; 
-    --text:       #000;
+    --text:       #000000;
     --text2:      #FFF;
 
 }
@@ -31,7 +31,7 @@ body {
 
 
 
-.row {
+.row, .row_ {
     display: flex;
     align-items: center;
     gap: 10px;

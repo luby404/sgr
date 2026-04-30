@@ -89,6 +89,8 @@ main {
     gap: 10px;
     justify-content: center;
     align-items: center;
+    color: var(--text);
+
 
 }
 
@@ -120,7 +122,8 @@ main {
     display: flex;
 }
 .content_carrinho {
-    background-color: #FFF;
+    background-color: var(--fundo);
+    color: var(--text);
     width: 100%;
     max-width: 400px;
     position: absolute;
@@ -129,7 +132,7 @@ main {
     bottom: 0;
 
     padding: 1rem;
-
+    
 
 }
 
