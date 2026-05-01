@@ -1,5 +1,6 @@
 from escpos import *
 
+from datetime import datetime
 
 def text_center(text):
     return POSTextBuilder(f"{text}").set_style(
@@ -45,9 +46,17 @@ class Print():
     
     def print_recibo_pedido(self, produtos:list, cozinha:bool=False, total:str=0, mesa=0, pedido=0):
         receipt = POSReceiptBuilder()
-        receipt.add_component(text_center(self.nome))
-        receipt.add_component(text_center(self.phone))
-        receipt.add_component(text_center("Recibbo de pagamento\n\n"))
+        if not cozinha:
+            receipt.add_component(text_center(self.nome))
+            receipt.add_component(text_center(self.phone))
+            receipt.add_component(text_center(datetime.now().strftime("%d/%m%Y %H:%M")))
+            receipt.add_component(text_center("Recibbo de pagamento\n\n"))
+            
+        else:
+            receipt.add_component(text_center(datetime.now().strftime("%d/%m%Y %H:%M")))
+            receipt.add_component(text_center("Recibbo Para Cozinha\n\n"))
+        
+        
 
 
         for produto in produtos:
@@ -55,17 +64,17 @@ class Print():
 
 
         receipt.add_component(text_left("-"*32))
-        receipt.add_component(text_left(f"Mesa: {mesa}"))
+        if mesa: receipt.add_component(text_left(f"Mesa: {mesa}"))
         receipt.add_component(text_left(f"Pedido: {pedido}"))
         receipt.add_component(text_left(f"Total: {total}"))
         
 
-
-        receipt.set_footer("\n\nEste Documento nao serve como fatura")
-        receipt.set_footer("Obrigado!")
-
-
-
+        if not cozinha:
+            receipt.set_footer("\n\nEste Documento nao serve como fatura")
+            receipt.set_footer("Obrigado!")
+        else:
+            receipt.set_footer("\n\nEste Documento serve apenas para cozinha")
+            
         self.printer.print(receipt.build())
     
     

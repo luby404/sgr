@@ -88,8 +88,8 @@ def index(name=None):
             
             query_pedidos = Pedido.select().where(
                 (Pedido.criado_em >= start_data) &
-                (Pedido.criado_em <= and_data)
-                #(Pedido.) # buscar por usuario
+                (Pedido.criado_em <= and_data) &
+                (Pedido.usuario == Usuario.get_or_none(Usuario.id == current_user)) # buscar por usuario
             )
             query_finalizados = query_pedidos.where(Pedido.status == status_pedido.finalizado)
             
@@ -106,7 +106,7 @@ def index(name=None):
         if name == "view_pedido" and mesa:
             pedido:Pedido = Pedido.select().where(Pedido.mesa == mesa)[-1]
             if pedido:
-                if pedido.status not in [Pedido.Status.finalizado, Pedido.Status.cancelado]:
+                #if pedido.status not in [Pedido.Status.finalizado, Pedido.Status.cancelado]:
                     Dados.pedido_mesa = pedido
                     for produto in ItenPedido.select().where(ItenPedido.pedido == pedido):
                         produto.price = converte_moeda(produto.produto_price)
@@ -115,6 +115,7 @@ def index(name=None):
             
                     print("iten do produto encontrado.")
                     Dados.pedido_total = converte_moeda(Dados.pedido_total)
+                    
         if name == "pos":
             
             query_produtos = Produto.select().where(
@@ -133,9 +134,7 @@ def index(name=None):
                 
             Dados.categorias = Categoria.select()
             
-        
         Dados.view =  render_template(pages[name], dados=Dados)
-        
     else:
         return render_template("404.html")
     
@@ -144,20 +143,30 @@ def index(name=None):
 
     return render_template("dh.index.html", dados=Dados)
 
-
 @dashboard.post("/update_pedido/<id>")
 def update_pedido(id):
-    pedido:Pedido = Pedido.get_or_none(Pedido.id == id)
+    pedido:Pedido  = Pedido.get_or_none(Pedido.id == id)
+     
     new_status    = request.form.get("status_update", Pedido.Status.pendente)
     if pedido:
         pedido.status = new_status
         mesa:Mesa = Mesa.get_or_none(Mesa.id == pedido.mesa.id)
         if mesa:
             if pedido.status in [Pedido.Status.finalizado, Pedido.Status.cancelado]:
-                print(mesa, mesa.status)
                 mesa.status = True
-                mesa.save()
-             
+                pedido.usuario = current_user
+            else:
+                mesa.status = False
+            mesa.save()
+        # voltar o estoque
+        for itenpedido in pedido.produtos.select():
+            itenpedido:ItenPedido = itenpedido
+            if pedido.status == Pedido.Status.cancelado:
+                produto:Produto = Produto.get_or_none(Produto.id == itenpedido.produto)
+                if produto:
+                    produto.estoque = int(produto.estoque) + int(itenpedido.quantidate)
+                    produto.save()
+            
         pedido.save()
         return redirect(url_for("dashboard.index", mesa=pedido.mesa.id, name="view_pedido"))
     return "Pedido Não encontrado."

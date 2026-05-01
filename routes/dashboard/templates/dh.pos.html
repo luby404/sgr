@@ -41,63 +41,10 @@
 
     </div>
 
-    <div class="view column">
+    <div class="view column" id="carrinho_pos" hx-get="{{ url_for('cardapio.carrinho_pos' ) }}" hx-target="#carrinho_pos" hx-trigger="load">
 
-        <strong>Lista de produtos</strong>
-
-        <div class="lista_produtos">
-
-            <div class="table">
-                <table>
-                    <thead>
-                        <tr>
-                            <td>produto</td>
-                            <td>qtd</td>
-                            <td>preço</td>
-                            <td>subtotal</td>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for id, produto in dados.carrinho.items() %}
-                        <tr>
-                            <td>{{ produto["nome"] }}</td>
-                            <td>{{ produto["qtd"] }}</td>
-                            <td>{{ produto["diaplay_price"] }}</td>
-                            <td>{{ produto["subtotal"] }}</td>
-                            <td>
-                                <a href="{{ url_for('cardapio.carrinho_delete_pos', id=id ) }}" id="link_c"
-                                    class="button">
-                                    <i class="ri-delete-bin-2-line"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-
-            </div>
-
-        </div>
-
-        <div class="column">
-            <div class="row">
-                <strong>Total:</strong>
-                <strong>{{ dados.total }}</strong>
-            </div>
-        </div>
-
-        <div class="grid_3">
-            <button class="button">
-                <i class="ri-check-line"></i>
-                <span>Finalizar</span>
-            </button>
-            <button class="button">
-                <i class="ri-close-line"></i>
-                <span>Cancelar</span>
-            </button>
-        </div>
+        carregado...
+        
 
     </div>
 

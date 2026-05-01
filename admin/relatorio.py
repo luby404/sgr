@@ -64,8 +64,10 @@ class RelatoriosAdmin(BaseView):
             produtos = sum( [ i.produtos.select().count() for i in query] )
             pedidos  = query.count()
             vendas   = sum(lst_pedidos)
-            media    = converte_moeda(vendas / pedidos)
-            
+            try:
+                media    = converte_moeda(vendas / pedidos)
+            except:
+                media = converte_moeda(0)
             vendas = converte_moeda(vendas)
             
             

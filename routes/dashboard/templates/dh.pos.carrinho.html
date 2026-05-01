@@ -1,0 +1,56 @@
+<strong>Lista de produtos</strong>
+
+<div class="lista_produtos">
+
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <td>produto</td>
+                    <td>qtd</td>
+                    <td>preço</td>
+                    <td>subtotal</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for id, produto in carrinho.items() %}
+                <tr>
+                    <td>{{ produto["nome"] }}</td>
+                    <td>{{ produto["qtd"] }}</td>
+                    <td>{{ produto["diaplay_price"] }}</td>
+                    <td>{{ produto["subtotal"] }}</td>
+                    <td>
+                        <a hx-get="{{ url_for('cardapio.carrinho_delete_pos', id=id, pos=1 ) }}"
+                            hx-target="#carrinho_pos" hx-confirm="Deseja eliminar o produto da lista?" id="link_c"
+                            class="button">
+                            <i class="ri-delete-bin-2-line"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+
+</div>
+
+<div class="column">
+    <div class="row">
+        <strong>Total:</strong>
+        <strong>{{ total }}</strong>
+    </div>
+</div>
+
+<div class="grid_3">
+    <button class="button" hx-get="{{ url_for('payment.pos_finalizar' ) }}" hx-confirm="Deseja finalizar a venda ?" hx-target="#carrinho_pos">
+        <i class="ri-check-line"></i>
+        <span>Finalizar</span>
+    </button>
+    <button class="button" hx-get="{{ url_for('cardapio.pos_cancelar' ) }}" hx-confirm="Deseja cancelar a venda?" hx-target="#carrinho_pos">
+        <i class="ri-close-line"></i>
+        <span>Cancelar</span>
+    </button>
+</div>

@@ -8,9 +8,11 @@ from flask import (
     render_template
 )
 
-from models import Mesa, Produto, Categoria, Pedido, ItenPedido
+from models import Mesa, Produto, Categoria, Pedido, ItenPedido, Usuario
 
 from utils import converte_moeda
+
+from flask_login import login_required, current_user
 
 cardapio = Blueprint(
     "cardapio",
@@ -31,7 +33,7 @@ def reck_mesa(id):
 @cardapio.get("/<mesa_uuid>")
 def index(mesa_uuid:str):
     
-    mesa:Mesa       = Mesa.get_or_none(Mesa.uuid == mesa_uuid)
+    mesa:Mesa           = Mesa.get_or_none(Mesa.uuid == mesa_uuid)
     categoria:Categoria = Categoria.get_or_none(Categoria.id == request.args.get("categoria", None))
     
     if not mesa:
@@ -40,31 +42,33 @@ def index(mesa_uuid:str):
     
     if not mesa.status:
         pedido:Pedido = Pedido.select().where(Pedido.mesa == mesa.id )[-1]
-        
         if pedido:
             if pedido.status not in [Pedido.Status.finalizado, Pedido.Status.cancelado]:
                 return redirect(url_for("cardapio.pedido", id=pedido.id))
     
     class dados:
         intens_carrinho = 0
-        produtos   = []
-        categorias = []
-        categoria_id = categoria.id if categoria else False
-        carrinho     = len([i for i in session.get("carrinho", {})])
+        produtos        = []
+        categorias      = []
+        categoria_id    = categoria.id if categoria else False
+        carrinho        = len([i for i in session.get("carrinho", {})])
         
-        nome_restaurante = "Nome"
+        nome_restaurante = "Cramer"
         mesa_id  = mesa.uuid
         
     # querys
-    query_produtos = Produto.select()
-    query_categoria = Categoria.select()
+    query_produtos  = Produto.select().where(
+        (Produto.cardapio == True) 
+    )
+    query_categoria = Categoria.select().where(
+        (Categoria.cardapio == True) 
+    )
     
     # filtrar por categoria
     if categoria:
         query_produtos = query_produtos.where(
             Produto.categoria == categoria
         )
-    
     for produto in query_produtos:
         produto.price = converte_moeda(produto.price)
         dados.produtos.append(produto)
@@ -85,7 +89,6 @@ def produto():
         return "Não encontrado."
     
     produto_.price = converte_moeda(produto_.price)
-    
     
     return render_template("cardapio.produto.html", produto=produto_, mesa=mesa)
 
@@ -163,6 +166,8 @@ def new_pedido(mesa):
                     subtotal=(pd.price * produto["qtd"])
                 )
                 total += (pd.price * produto["qtd"])
+                pd.estoque = int(pd.estoque) - int(produto["qtd"])
+                pd.save()
             
         session["carrinho"] = {}
         pedido.total = total
@@ -218,9 +223,9 @@ def pos():
     return render_template("cardapio.produto.html", produto=produto_)
 
 @cardapio.route("/carrinho_pos", methods=["POST", "GET", "DELETE"])
-def carrinhopos():
+def carrinho_pos():
     
-    carrinho        = session.get("carrinho", {})
+    carrinho        = session.get("carrinho_pos", {})
     total = 0
     
     if request.method == "POST":
@@ -230,9 +235,11 @@ def carrinhopos():
         
         if produto:
             
-            carrinho = session.get("carrinho", {})
+            carrinho = session.get("carrinho_pos", {})
             if str(produto.id) in carrinho:
                 carrinho[str(produto.id)]["qtd"] += qtd
+                carrinho[str(produto.id)]["subtotal"] = converte_moeda((float(produto.price) * carrinho[str(produto.id)]["qtd"]))
+                
             else:
                 carrinho[str(produto.id)] = {
                     "qtd": qtd,
@@ -244,19 +251,33 @@ def carrinhopos():
                     "subtotal":      converte_moeda((produto.price * qtd))
                 }
             
-            session["carrinho"] = carrinho
+            session["carrinho_pos"] = carrinho
             
-        return redirect(url_for("cardapio.index", name="pos"))
-    
-    
-    return render_template("cardapio.carrinho.html", carrinho=carrinho, total=total)
+        #return redirect(url_for("cardapio.index", name="pos"))
+    for key, iten in carrinho.items():
+        total += float(float(iten["price"]) * int(iten["qtd"]))
+    total = converte_moeda(total)
+    return render_template("dh.pos.carrinho.html", carrinho=carrinho, total=total)
 
 @cardapio.get("/carrinho_pos/delete/<id>")
 def carrinho_delete_pos(id):
     
-    carrinho        = session.get("carrinho", {})
+    session_name = "carrinho_pos" if request.args.get("pos", None) else "carrinho"
+    
+    carrinho        = session.get(session_name, {})
     del carrinho[str(id)]
-    session["carrinho"] = carrinho
+    session[session_name] = carrinho
+    
+    if session_name == "carrinho_pos":
+        return redirect(url_for("cardapio.carrinho_pos"))
     
     return redirect(url_for("dashboard.index", name="pos"))
+
+
+
+@cardapio.get("/cancelar_pos")
+def pos_cancelar():
+    session["carrinho_pos"] = {}
+    return redirect(url_for("cardapio.carrinho_pos"))
+
 

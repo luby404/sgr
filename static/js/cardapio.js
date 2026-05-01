@@ -10,3 +10,6 @@ function change_overlay(){
 }
 
 
+function alert_not_produto() {
+    alert("O produto selecionado não está disponivel no momento.")
+}

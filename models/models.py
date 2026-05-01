@@ -87,12 +87,12 @@ class Pedido(Model):
     aberto_em  = orm.DateTimeField(default=datetime.now)
     fechado_em = orm.DateTimeField(default=datetime.now)  
     
+    usuario    = orm.ForeignKeyField(Usuario, backref="pedidos", null=True)
     total      = orm.DecimalField(max_digits=16, decimal_places=2, default=0)
     status     = orm.CharField(default=Status.pendente, choices=[
         (i, i) for i in [Status.pendente, Status.preparacao, Status.entregue, Status.finalizado, Status.cancelado]
     ])
     
-    #usuario = orm.ForeignKeyField(Usuario, backref="pedidos", null=True)
 
 class ItenPedido(Model):
     

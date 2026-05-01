@@ -1,5 +1,8 @@
 {% extends 'admin/master.html' %}
 
 {% block body %}
-    <h1>Sejá bbem vindo ao painel admin</h1>
+    <h1>Olá, {{ current_user.nome.split()[0] }} <br>
+        Sejá bem-vindo ao painel adiministroador</h1>
+    <hr>
+    
 {% endblock %}

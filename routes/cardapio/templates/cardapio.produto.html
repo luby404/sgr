@@ -54,7 +54,7 @@
 {% else %}
 
 
-<form class="content_produto_modal column" action="{{ url_for('cardapio.carrinho_pos' ) }}" method="post">
+<form class="content_produto_modal column" hx-post="{{ url_for('cardapio.carrinho_pos' ) }}" hx-target="#carrinho_pos" method="post">
 
     <div class="row">
         <span>Adicionar no carrinho pos</span>
@@ -85,7 +85,7 @@
 
     <div class="row">
         <strong>{{ produto.price }}</strong>
-        <button class="button">
+        <button class="button" onclick="change_overlay()">
             <span>Adicionar</span>
             <i class="ri-shopping-cart-line"></i>
         </button>
