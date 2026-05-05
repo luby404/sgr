@@ -62,6 +62,8 @@ def recibo(id):
             # imprimir recibo
             try:
                 prt.print_recibo_pedido(produtos, total=converte_moeda(total), mesa=mesa, pedido=pedido)
+                if pedido.status == Pedido.Status.pendente:
+                    prt.print_recibo_pedido(produtos, cozinha=True, total=converte_moeda(total), mesa=mesa, pedido=pedido)
                 msg["status"] = True
             except:
                 msg["msg"] = "Não foi possivel imprimir o recibo"
