@@ -2,6 +2,12 @@ from escpos import *
 
 from datetime import datetime
 
+from utils import (
+    NOME,
+    TELEFONE,
+    NIF
+)
+
 def text_center(text):
     return POSTextBuilder(f"{text}").set_style(
             POSPrintStyle.BOLD
@@ -22,8 +28,9 @@ class Print():
     def __init__(self, name="t1"):
         self.printer = POSPrinter(name)
         
-        self.nome = "Cramer"
-        self.phone = "931617941"
+        self.nome = NOME
+        self.phone = TELEFONE
+        self.nif = NIF
     
     
     def print_recibo_qr_mesa(self, url, num_mesa):
@@ -49,12 +56,13 @@ class Print():
         if not cozinha:
             receipt.add_component(text_center(self.nome))
             receipt.add_component(text_center(self.phone))
-            receipt.add_component(text_center(datetime.now().strftime("%d/%m%Y %H:%M")))
-            receipt.add_component(text_center("Recibbo de pagamento\n\n"))
+            receipt.add_component(text_center(f"NIF: {self.nif}"))
+            receipt.add_component(text_center(datetime.now().strftime("%d/%m/%Y %H:%M")))
+            receipt.add_component(text_center("Recibo de pagamento\n\n"))
             
         else:
-            receipt.add_component(text_center(datetime.now().strftime("%d/%m%Y %H:%M")))
-            receipt.add_component(text_center("Recibbo Para Cozinha\n\n"))
+            receipt.add_component(text_center(datetime.now().strftime("%d/%m/%Y %H:%M")))
+            receipt.add_component(text_center("Recibo Para Cozinha\n\n"))
         
         
 

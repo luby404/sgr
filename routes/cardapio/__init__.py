@@ -10,7 +10,8 @@ from flask import (
 
 from models import Mesa, Produto, Categoria, Pedido, ItenPedido, Usuario
 
-from utils import converte_moeda
+from utils import converte_moeda, NOME, BANNER
+
 
 from flask_login import login_required, current_user
 
@@ -53,8 +54,9 @@ def index(mesa_uuid:str):
         categoria_id    = categoria.id if categoria else False
         carrinho        = len([i for i in session.get("carrinho", {})])
         
-        nome_restaurante = "Cramer"
+        nome_restaurante = NOME
         mesa_id  = mesa.uuid
+        banner = BANNER
         
     # querys
     query_produtos  = Produto.select().where(

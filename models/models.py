@@ -33,6 +33,9 @@ class Usuario(Model, UserMixin):
     def set_password(self, senha:str):
         self.senha = generate_password_hash(senha)
         return self.senha
+
+    def __str__(self):
+        return self.nome
     
 
 class Categoria(Model):

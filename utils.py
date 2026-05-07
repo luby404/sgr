@@ -16,3 +16,10 @@ def converte_moeda(valor:int):
     return f"{valor:,.2f}".replace(",", "-").replace(".", ",").replace("-", ".")
 
 
+
+# dados da empresa
+NOME     = "BOM SABOR ADS"
+NIF      = "0002120"
+TELEFONE = "931617941"
+BANNER = "Bom sabores"
+

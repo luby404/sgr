@@ -154,7 +154,10 @@ def update_pedido(id):
         if mesa:
             if pedido.status in [Pedido.Status.finalizado, Pedido.Status.cancelado]:
                 mesa.status = True
-                pedido.usuario = current_user
+                pedido.usuario    = current_user
+                pedido.fechado_em = datetime.now()
+                pedido.usuario    = current_user
+                
             else:
                 mesa.status = False
             mesa.save()
@@ -166,7 +169,8 @@ def update_pedido(id):
                 if produto:
                     produto.estoque = int(produto.estoque) + int(itenpedido.quantidate)
                     produto.save()
-            
+        
+        
         pedido.save()
         return redirect(url_for("dashboard.index", mesa=pedido.mesa.id, name="view_pedido"))
     return "Pedido Não encontrado."

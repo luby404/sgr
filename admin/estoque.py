@@ -7,7 +7,7 @@ from flask_login import current_user
 current_user:Usuario
 
 class EstoqueAdmin(Model):
-    
+    roles = ["admin", "gestor"]
     column_list = ["produto", "quantidade", "tipo", "criado_em"]
     
     can_delete = False

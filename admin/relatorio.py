@@ -1,13 +1,16 @@
 import csv
-from .base import Model
-from flask_admin import expose, BaseView
 from io import StringIO, BytesIO
 from datetime import datetime, time
+
+from flask import redirect, url_for
+from flask_login import current_user
 from flask import request, send_file
+from flask_admin import expose, BaseView
 
-from models import Pedido, ItenPedido
-
+from .base import Model
 from utils import converte_moeda
+from models import Pedido, ItenPedido, Usuario
+
 
 def parse_date(value):
     """
@@ -36,6 +39,24 @@ class PedidoType:
     
 
 class RelatoriosAdmin(BaseView):
+    
+    roles = ["admin", "gestor"]
+    user = None
+    
+    def set_roles(self):
+        ...
+    
+    def is_accessible(self):
+                
+        view = False
+        self.user:Usuario = current_user
+        if self.user.is_authenticated and self.user.user_type in self.roles:
+            view = True
+            self.set_roles()
+        return view
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for("auth.login"))
 
     def _get_query_filtrada(self):
         start = request.args.get("inicio", "").strip()

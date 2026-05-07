@@ -42,7 +42,7 @@ class Model(ModelView):
 
 class Link(MenuLink):
     
-    roles = ["admin"]
+    roles = ["admin", "gestor", "caixa"]
     user = None
     
     def set_roles(self):
