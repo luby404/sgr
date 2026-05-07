@@ -43,25 +43,34 @@
                     <td>{{ produto.subtotal }}</td>
                 </tr>
                 {% endfor %}
-                
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <div class="column">
+                            <div class="row2">
+                                <span>Mesa:</span><strong> {{ dados.mesa_pedido }}</strong>
+                            </div>
+                            <div class="row2">
+                                <span>Total:</span><strong> {{ dados.total }}</strong>
+                            </div>
+                            <div class="row2 ">
+                                <span>Status:</span><strong class="status_{{ dados.status_pedido.split()[0] }}"> {{ dados.status_pedido }}</strong>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
             </tbody>
         </table>
     </div>
 
+    <hr>
 
-    <div class="row">
-        <span></span>
-        <div class="column">
-            <div class="row2">
-                <span>Mesa:</span><strong> {{ dados.mesa_pedido }}</strong>
-            </div>
-            <div class="row2">
-                <span>Total:</span><strong> {{ dados.total }}</strong>
-            </div>
-            <div class="row2">
-                <span>Status:</span><strong> {{ dados.status_pedido }}</strong>
-            </div>
-        </div>
+    <div class="column content center" style="text-align: center;">
+        <h3>Emquanto o pedido estiver aberto, não é possível adicionar produtos</h3>
+        <p>Caso queira adicionar mais produtos aguarde o pedidos ser finalizado ou dirija-se ao balcão</p>
     </div>
 
 

@@ -213,7 +213,36 @@ main {
     cursor: pointer;
 }
 
+/* status */
+.status_pendente {
+    background-color: #ff99009a;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: .8rem;
+    font-weight: 600;
+    color: #000000d2;
+    
+}
 
+.status_em {
+    background-color: #ffe6009a;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: .8rem;
+    font-weight: 600;
+    color: #000000d2;
+    
+}
+
+.status_entregue {
+    background-color: #3cff009a;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: .8rem;
+    font-weight: 600;
+    color: #000000d2;
+    
+}
 
 
 /* mobile */

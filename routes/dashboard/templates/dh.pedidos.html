@@ -1,9 +1,11 @@
 <div class="content_pedidos column">
 
+   
+
     <div class="row">
         <div class="column">
             <strong>Gestão de pedidos</strong>
-            <p>Gerencie seus pedidos em na velocidade da luz</p>
+            <p>Gerencie seus pedidos na velocidade da luz</p>
         </div>
 
         <div class="row2">
@@ -21,10 +23,8 @@
 
     <hr>
 
-    <div class="mesa_content" id="content_pedido"
-    hx-get="{{ url_for('dashboard.check_pedido' ) }}"
-    hx-trigger="every 3s"
-     hx-target="#content_pedido">
+    <div class="mesa_content" id="content_pedido" hx-get="{{ url_for('dashboard.check_pedido' ) }}"
+        hx-trigger="every 3s" hx-target="#content_pedido">
 
         {% for pedido in dados.pedidos %}
         <div class="mesa_card column" onclick="change_overlay()"
@@ -39,11 +39,17 @@
         </div>
         {% endfor %}
 
+        
+
+
+
     </div>
 
 
 
+
+
+
+
+
 </div>
-
-
-

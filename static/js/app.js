@@ -18,25 +18,18 @@ function change_overlay() {
 
 function tocarMusicaDuasVezes(src) {
     const audio = new Audio(src);
-    audio.muted = true;
-    let contador = 0;
 
     function tocar() {
-        audio.muted = false;
-        audio.play().catch(() => {
+        audio.play().catch((error) => {
             console.log("Autoplay bloqueado pelo navegador");
+            document.addEventListener("click", function(){
+                audio.play()
+            }, {once: true})
         });
     }
 
-    audio.addEventListener("ended", () => {
-        contador++;
-        if (contador < 2) {
-            audio.currentTime = 0;
-            tocar();
-        }
-    });
+    document.addEventListener("load", ()=>{tocar()})
 
-    window.addEventListener("load", () => {
-        tocar();
-    });
+
+    
 }
